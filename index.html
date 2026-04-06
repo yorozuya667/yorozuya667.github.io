@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Wedding Invitation</title>
+  <style>
+    :root{
+      --bg:#f7f3ee;
+      --card:#ffffff;
+      --soft:#faf7f2;
+      --text:#2b2b2b;
+      --muted:#6b675f;
+      --accent:#b88c55;
+      --accent-dark:#9e7442;
+      --ok-bg:#eef7ee;
+      --ok-text:#1f5d1f;
+      --err-bg:#fdecec;
+      --err-text:#8a2d2d;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:Arial,system-ui,sans-serif;
+      color:var(--text);
+      background:linear-gradient(180deg,#fbf7f2 0%,#f5efe7 100%);
+    }
+    .wrap{
+      max-width:840px;
+      margin:0 auto;
+      padding:24px 16px 48px;
+    }
+    .card{
+      background:rgba(255,255,255,.92);
+      border:1px solid rgba(255,255,255,.6);
+      border-radius:28px;
+      padding:24px;
+      box-shadow:0 10px 28px rgba(0,0,0,.08);
+      backdrop-filter: blur(6px);
+    }
+    .hero{
+      text-align:center;
+      padding:12px 0 8px;
+    }
+    .eyebrow{
+      display:inline-block;
+      padding:8px 14px;
+      border-radius:999px;
+      background:#f0e7da;
+      font-size:14px;
+      font-weight:700;
+      margin-bottom:14px;
+    }
+    h1{
+      margin:0 0 12px;
+      font-size:36px;
+      line-height:1.15;
+    }
+    .lead{
+      margin:0 auto 22px;
+      max-width:580px;
+      font-size:18px;
+      line-height:1.6;
+      color:var(--muted);
+    }
+    .grid{
+      display:grid;
+      gap:14px;
+      margin:22px 0;
+    }
+    @media (min-width:700px){
+      .grid{grid-template-columns:1fr 1fr}
+      h1{font-size:52px}
+    }
+    .info{
+      background:var(--soft);
+      border-radius:20px;
+      padding:18px;
+    }
+    .label{
+      font-size:12px;
+      font-weight:800;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+      color:#8b857b;
+      margin-bottom:8px;
+    }
+    .value{
+      font-size:22px;
+      font-weight:800;
+      line-height:1.4;
+    }
+    .timer-wrap{
+      margin:28px 0 10px;
+      text-align:center;
+    }
+    .timer-title{
+      margin:0 0 14px;
+      font-size:16px;
+      font-weight:700;
+      color:var(--muted);
+    }
+    .timer{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:12px;
+    }
+    .timer-box{
+      background:var(--soft);
+      border-radius:20px;
+      padding:14px 8px;
+    }
+    .timer-num{
+      display:block;
+      font-size:30px;
+      font-weight:900;
+      font-variant-numeric:tabular-nums;
+    }
+    .timer-label{
+      display:block;
+      margin-top:6px;
+      font-size:12px;
+      text-transform:uppercase;
+      letter-spacing:.06em;
+      color:#8b857b;
+      font-weight:700;
+    }
+    .cta{
+      margin:28px 0 10px;
+    }
+    .cta-note{
+      text-align:center;
+      color:var(--muted);
+      margin:0 0 14px;
+      line-height:1.6;
+    }
+    .btn{
+      width:100%;
+      border:0;
+      border-radius:20px;
+      padding:22px 18px;
+      font-size:28px;
+      font-weight:900;
+      color:#fff;
+      background:linear-gradient(180deg,var(--accent) 0%,var(--accent-dark) 100%);
+      cursor:pointer;
+      box-shadow:0 10px 22px rgba(184,140,85,.28);
+    }
+    .btn:hover{filter:brightness(1.03)}
+    .btn:disabled{
+      opacity:.75;
+      cursor:default;
+      filter:none;
+    }
+    .result{
+      display:none;
+      margin-top:14px;
+      padding:16px;
+      border-radius:16px;
+      font-weight:700;
+      line-height:1.5;
+      text-align:center;
+    }
+    .result.ok{display:block;background:var(--ok-bg);color:var(--ok-text)}
+    .result.err{display:block;background:var(--err-bg);color:var(--err-text)}
+    .lang{
+      margin-top:22px;
+      padding-top:22px;
+      border-top:1px solid #eee5d9;
+    }
+    .lang h2{
+      margin:0 0 8px;
+      font-size:21px;
+    }
+    .lang p{
+      margin:0;
+      line-height:1.8;
+      color:var(--text);
+    }
+    .links{
+      margin-top:18px;
+      text-align:center;
+    }
+    .links a{
+      color:#6f4e2f;
+      font-weight:700;
+      text-decoration:none;
+    }
+    .small{
+      margin-top:20px;
+      text-align:center;
+      color:var(--muted);
+      font-size:14px;
+    }
+    iframe[name="submitFrame"]{
+      width:0;height:0;border:0;position:absolute;left:-9999px;top:-9999px;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card">
+      <section class="hero">
+        <div class="eyebrow">Wedding Invitation</div>
+        <h1>Талант &amp; Мадина</h1>
+        <p class="lead">
+          Дорогие гости, будем очень рады разделить с вами наш особенный день.
+        </p>
+      </section>
+
+      <section class="grid">
+        <div class="info">
+          <div class="label">Дата</div>
+          <div class="value">15 августа 2026</div>
+        </div>
+        <div class="info">
+          <div class="label">Время</div>
+          <div class="value">17:00</div>
+        </div>
+        <div class="info">
+          <div class="label">Место</div>
+          <div class="value">Astana, Saltanat Hall</div>
+        </div>
+        <div class="info">
+          <div class="label">Адрес</div>
+          <div class="value">г. Астана, пример адреса 10</div>
+        </div>
+      </section>
+
+      <section class="timer-wrap">
+        <p class="timer-title">До окончания подтверждения</p>
+        <div class="timer">
+          <div class="timer-box"><span class="timer-num" id="days">--</span><span class="timer-label">дней</span></div>
+          <div class="timer-box"><span class="timer-num" id="hours">--</span><span class="timer-label">часов</span></div>
+          <div class="timer-box"><span class="timer-num" id="mins">--</span><span class="timer-label">минут</span></div>
+          <div class="timer-box"><span class="timer-num" id="secs">--</span><span class="timer-label">секунд</span></div>
+        </div>
+      </section>
+
+      <section class="cta">
+        <p class="cta-note">
+          Если вы сможете присутствовать, просто нажмите на большую кнопку ниже.
+          Если не нажмёте — мы будем считать, что вы не придёте.
+        </p>
+
+        <form id="rsvpForm" action="PASTE_YOUR_APPS_SCRIPT_WEBAPP_URL_HERE" method="POST" target="submitFrame">
+          <input type="hidden" name="token" id="tokenField" value="" />
+          <input type="hidden" name="answer" value="YES" />
+          <button id="confirmBtn" class="btn" type="submit">Я приду / I will come / Келемін</button>
+        </form>
+
+        <iframe name="submitFrame"></iframe>
+        <div id="result" class="result"></div>
+      </section>
+
+      <section class="lang">
+        <h2>Русский</h2>
+        <p>
+          Дорогие гости!<br>
+          Будем счастливы видеть вас на нашей свадьбе.<br>
+          Пожалуйста, подтвердите участие нажатием на кнопку выше.
+        </p>
+      </section>
+
+      <section class="lang">
+        <h2>Қазақша</h2>
+        <p>
+          Құрметті қонақтар!<br>
+          Сіздерді үйлену тойымызға қуана шақырамыз.<br>
+          Жоғарыдағы батырманы басып, қатысатыныңызды растауыңызды сұраймыз.
+        </p>
+      </section>
+
+      <section class="lang">
+        <h2>English</h2>
+        <p>
+          Dear guests,<br>
+          We would be happy to see you at our wedding.<br>
+          Please confirm your attendance by pressing the button above.
+        </p>
+      </section>
+
+      <div class="links">
+        <a href="https://2gis.kz" target="_blank" rel="noopener noreferrer">Открыть карту</a>
+      </div>
+
+      <div class="small">
+        Подтверждение принимается до 10 августа 2026, 23:59.
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ЗАМЕНИ НА СВОЙ ДЕДЛАЙН В ISO-ФОРМАТЕ
+    const DEADLINE_ISO = '2026-08-10T23:59:00+05:00';
+
+    const token = (new URLSearchParams(window.location.search).get('t') || '').trim().toUpperCase();
+    const form = document.getElementById('rsvpForm');
+    const tokenField = document.getElementById('tokenField');
+    const btn = document.getElementById('confirmBtn');
+    const result = document.getElementById('result');
+
+    tokenField.value = token;
+
+    if (!token) {
+      btn.disabled = true;
+      showError('Ссылка недействительна: отсутствует токен.');
+    }
+
+    form.addEventListener('submit', function (e) {
+      if (!token) {
+        e.preventDefault();
+        showError('Ссылка недействительна: отсутствует токен.');
+        return;
+      }
+
+      if (form.action.indexOf('PASTE_YOUR_APPS_SCRIPT_WEBAPP_URL_HERE') !== -1) {
+        e.preventDefault();
+        showError('В index.html не вставлен URL Apps Script web app.');
+        return;
+      }
+
+      btn.disabled = true;
+      btn.textContent = 'Сохраняем...';
+
+      // обычный cross-origin POST в скрытый iframe
+      setTimeout(function () {
+        result.className = 'result ok';
+        result.textContent = 'Спасибо! Если токен корректный, ваш ответ сохранён.';
+        btn.style.display = 'none';
+      }, 900);
+    });
+
+    function showError(message) {
+      result.className = 'result err';
+      result.textContent = message;
+    }
+
+    function tick() {
+      const deadline = new Date(DEADLINE_ISO).getTime();
+
+      if (Number.isNaN(deadline)) {
+        document.getElementById('days').textContent = '!!';
+        document.getElementById('hours').textContent = '!!';
+        document.getElementById('mins').textContent = '!!';
+        document.getElementById('secs').textContent = '!!';
+        showError('Ошибка: неверный формат DEADLINE_ISO в index.html.');
+        btn.disabled = true;
+        return;
+      }
+
+      const diff = deadline - Date.now();
+
+      if (diff <= 0) {
+        document.getElementById('days').textContent = '0';
+        document.getElementById('hours').textContent = '0';
+        document.getElementById('mins').textContent = '0';
+        document.getElementById('secs').textContent = '0';
+        btn.disabled = true;
+        btn.textContent = 'Подтверждение закрыто';
+        return;
+      }
+
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+      const mins = Math.floor((diff / (1000 * 60)) % 60);
+      const secs = Math.floor((diff / 1000) % 60);
+
+      document.getElementById('days').textContent = String(days);
+      document.getElementById('hours').textContent = String(hours);
+      document.getElementById('mins').textContent = String(mins);
+      document.getElementById('secs').textContent = String(secs);
+    }
+
+    tick();
+    setInterval(tick, 1000);
+  </script>
+</body>
+</html>
