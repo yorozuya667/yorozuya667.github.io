@@ -6,8 +6,6 @@
   <title>Wedding Invitation</title>
   <style>
     :root{
-      --bg:#f7f3ee;
-      --card:#ffffff;
       --soft:#faf7f2;
       --text:#2b2b2b;
       --muted:#6b675f;
@@ -25,11 +23,28 @@
       color:var(--text);
       background:linear-gradient(180deg,#fbf7f2 0%,#f5efe7 100%);
     }
-    .wrap{
-      max-width:840px;
-      margin:0 auto;
-      padding:24px 16px 48px;
+
+    .intro-overlay{
+      position:fixed;
+      inset:0;
+      z-index:9999;
+      background:#000;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      overflow:hidden;
+      transition:opacity .85s ease;
     }
+    .intro-overlay.hidden{opacity:0;pointer-events:none}
+    .intro-video{width:100%;height:100%;object-fit:cover;background:#000}
+    .white-flash{position:absolute;inset:0;background:#fff;opacity:0;pointer-events:none}
+    .white-flash.active{animation:flash .55s ease forwards}
+    @keyframes flash{0%{opacity:0}38%{opacity:.95}100%{opacity:0}}
+
+    .site-content{opacity:0;transform:translateY(16px);transition:opacity .9s ease, transform .9s ease}
+    .site-content.visible{opacity:1;transform:translateY(0)}
+
+    .wrap{max-width:840px;margin:0 auto;padding:24px 16px 48px}
     .card{
       background:rgba(255,255,255,.92);
       border:1px solid rgba(255,255,255,.6);
@@ -38,129 +53,50 @@
       box-shadow:0 10px 28px rgba(0,0,0,.08);
       backdrop-filter: blur(6px);
     }
-    .hero{
-      text-align:center;
-      padding:12px 0 8px;
-    }
-    .eyebrow{
-      display:inline-block;
-      padding:8px 14px;
-      border-radius:999px;
-      background:#f0e7da;
-      font-size:14px;
-      font-weight:700;
-      margin-bottom:14px;
-    }
-    h1{
-      margin:0 0 12px;
-      font-size:36px;
-      line-height:1.15;
-    }
-    .lead{
-      margin:0 auto 22px;
-      max-width:580px;
-      font-size:18px;
-      line-height:1.6;
-      color:var(--muted);
-    }
-    .grid{
-      display:grid;
-      gap:14px;
-      margin:22px 0;
-    }
-    @media (min-width:700px){
-      .grid{grid-template-columns:1fr 1fr}
-      h1{font-size:52px}
-    }
-    .info{
-      background:var(--soft);
-      border-radius:20px;
-      padding:18px;
-    }
-    .label{
-      font-size:12px;
-      font-weight:800;
-      letter-spacing:.08em;
-      text-transform:uppercase;
-      color:#8b857b;
-      margin-bottom:8px;
-    }
-    .value{
-      font-size:22px;
-      font-weight:800;
-      line-height:1.4;
-    }
-    .timer-wrap{
-      margin:28px 0 10px;
-      text-align:center;
-    }
-    .timer-title{
-      margin:0 0 14px;
+    .hero{text-align:center;padding:12px 0 8px}
+    .eyebrow{display:inline-block;padding:8px 14px;border-radius:999px;background:#f0e7da;font-size:14px;font-weight:700;margin-bottom:14px}
+    h1{margin:0 0 12px;font-size:36px;line-height:1.15}
+    .lead{margin:0 auto 22px;max-width:580px;font-size:18px;line-height:1.6;color:var(--muted)}
+    .grid{display:grid;gap:14px;margin:22px 0}
+    @media (min-width:700px){.grid{grid-template-columns:1fr 1fr}h1{font-size:52px}}
+    .info{background:var(--soft);border-radius:20px;padding:18px}
+    .label{font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#8b857b;margin-bottom:8px}
+    .value{font-size:22px;font-weight:800;line-height:1.4}
+
+    .timer-wrap{margin:28px 0 10px;text-align:center}
+    .timer-title{margin:0 0 14px;font-size:16px;font-weight:700;color:var(--muted)}
+    .timer{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+    .timer-box{background:var(--soft);border-radius:20px;padding:14px 8px}
+    .timer-num{display:block;font-size:30px;font-weight:900;font-variant-numeric:tabular-nums}
+    .timer-label{display:block;margin-top:6px;font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:#8b857b;font-weight:700}
+
+    .cta{margin:28px 0 10px}
+    .cta-note{text-align:center;color:var(--muted);margin:0 0 14px;line-height:1.6}
+    .field-grid{display:grid;gap:12px;margin-bottom:12px}
+    @media (min-width:700px){.field-grid{grid-template-columns:1fr 1fr}}
+    .field{display:flex;flex-direction:column;gap:6px}
+    .field label{font-size:14px;font-weight:700;color:#6f4e2f}
+    .field input{
+      border:1px solid #ddcfbf;
+      background:#fff;
+      border-radius:14px;
+      padding:12px;
       font-size:16px;
-      font-weight:700;
-      color:var(--muted);
-    }
-    .timer{
-      display:grid;
-      grid-template-columns:repeat(4,1fr);
-      gap:12px;
-    }
-    .timer-box{
-      background:var(--soft);
-      border-radius:20px;
-      padding:14px 8px;
-    }
-    .timer-num{
-      display:block;
-      font-size:30px;
-      font-weight:900;
-      font-variant-numeric:tabular-nums;
-    }
-    .timer-label{
-      display:block;
-      margin-top:6px;
-      font-size:12px;
-      text-transform:uppercase;
-      letter-spacing:.06em;
-      color:#8b857b;
-      font-weight:700;
-    }
-    .cta{
-      margin:28px 0 10px;
-    }
-    .cta-note{
-      text-align:center;
-      color:var(--muted);
-      margin:0 0 14px;
-      line-height:1.6;
     }
     .btn{
       width:100%;
       border:0;
       border-radius:20px;
       padding:22px 18px;
-      font-size:28px;
+      font-size:30px;
       font-weight:900;
       color:#fff;
       background:linear-gradient(180deg,var(--accent) 0%,var(--accent-dark) 100%);
       cursor:pointer;
       box-shadow:0 10px 22px rgba(184,140,85,.28);
     }
-    .btn:hover{filter:brightness(1.03)}
-    .btn:disabled{
-      opacity:.75;
-      cursor:default;
-      filter:none;
-    }
-    .result{
-      display:none;
-      margin-top:14px;
-      padding:16px;
-      border-radius:16px;
-      font-weight:700;
-      line-height:1.5;
-      text-align:center;
-    }
+    .btn:disabled{opacity:.75;cursor:default}
+    .result{display:none;margin-top:14px;padding:16px;border-radius:16px;font-weight:700;line-height:1.5;text-align:center}
     .result.ok{display:block;background:var(--ok-bg);color:var(--ok-text)}
     .result.err{display:block;background:var(--err-bg);color:var(--err-text)}
     .lang{
@@ -195,67 +131,12 @@
     iframe[name="submitFrame"]{
       width:0;height:0;border:0;position:absolute;left:-9999px;top:-9999px;
     }
-    .lang-selector{
-      background:rgba(184,140,85,.1);
-      border-radius:16px;
-      padding:14px;
-      margin-bottom:20px;
-      text-align:center;
-    }
-    .lang-selector-label{
-      font-size:13px;
-      font-weight:600;
-      color:var(--muted);
-      margin-right:12px;
-      display:inline-block;
-    }
-    .lang-btn{
-      display:inline-block;
-      padding:6px 12px;
-      margin:0 4px;
-      border:2px solid transparent;
-      border-radius:8px;
-      background:rgba(255,255,255,.6);
-      color:var(--text);
-      font-size:13px;
-      font-weight:600;
-      cursor:pointer;
-      transition:all .2s ease;
-    }
-    .lang-btn:hover{
-      background:rgba(255,255,255,.9);
-    }
-    .lang-btn.active{
-      border-color:var(--accent);
-      background:var(--accent);
-      color:#fff;
-    }
-    .content-lang{
-      display:none;
-    }
-    .content-lang.active{
-      display:block;
-    }
   </style>
 </head>
 <body>
   <div class="wrap">
-    <div class="lang-selector">
-      <span class="lang-selector-label">Change language:</span>
-      <button class="lang-btn active" data-lang="kk">Қазақша</button>
-      <button class="lang-btn" data-lang="ru">Русский</button>
-      <button class="lang-btn" data-lang="en">English</button>
-    </div>
     <div class="card">
-      <section class="hero content-lang active" data-lang="kk">
-        <div class="eyebrow">Wedding Invitation</div>
-        <h1>Талант &amp; Мадина</h1>
-        <p class="lead">
-          Құрметті қонақтар, сіздерді біздің ерекше көлік күнінде біз бен бөлісуге балуға шақырамыз.
-        </p>
-      </section>
-
-      <section class="hero content-lang" data-lang="ru">
+      <section class="hero">
         <div class="eyebrow">Wedding Invitation</div>
         <h1>Талант &amp; Мадина</h1>
         <p class="lead">
@@ -263,45 +144,27 @@
         </p>
       </section>
 
-      <section class="hero content-lang" data-lang="en">
-        <div class="eyebrow">Wedding Invitation</div>
-        <h1>Talent &amp; Madina</h1>
-        <p class="lead">
-          Dear guests, we will be delighted to share our special day with you.
-        </p>
-      </section>
-
       <section class="grid">
         <div class="info">
-          <div class="label content-lang active" data-lang="kk">Күні</div>
-          <div class="label content-lang" data-lang="ru">Дата</div>
-          <div class="label content-lang" data-lang="en">Date</div>
+          <div class="label">Дата</div>
           <div class="value">15 августа 2026</div>
         </div>
         <div class="info">
-          <div class="label content-lang active" data-lang="kk">Уақыты</div>
-          <div class="label content-lang" data-lang="ru">Время</div>
-          <div class="label content-lang" data-lang="en">Time</div>
+          <div class="label">Время</div>
           <div class="value">17:00</div>
         </div>
         <div class="info">
-          <div class="label content-lang active" data-lang="kk">Орны</div>
-          <div class="label content-lang" data-lang="ru">Место</div>
-          <div class="label content-lang" data-lang="en">Venue</div>
+          <div class="label">Место</div>
           <div class="value">Astana, Saltanat Hall</div>
         </div>
         <div class="info">
-          <div class="label content-lang active" data-lang="kk">Мекен-жайы</div>
-          <div class="label content-lang" data-lang="ru">Адрес</div>
-          <div class="label content-lang" data-lang="en">Address</div>
+          <div class="label">Адрес</div>
           <div class="value">г. Астана, пример адреса 10</div>
         </div>
       </section>
 
       <section class="timer-wrap">
-        <p class="timer-title content-lang active" data-lang="kk">Растау синасын бітіспеге дейін</p>
-        <p class="timer-title content-lang" data-lang="ru">До окончания подтверждения</p>
-        <p class="timer-title content-lang" data-lang="en">Until confirmation closes</p>
+        <p class="timer-title">До окончания подтверждения</p>
         <div class="timer">
           <div class="timer-box"><span class="timer-num" id="days">--</span><span class="timer-label">дней</span></div>
           <div class="timer-box"><span class="timer-num" id="hours">--</span><span class="timer-label">часов</span></div>
@@ -311,43 +174,22 @@
       </section>
 
       <section class="cta">
-        <p class="cta-note content-lang active" data-lang="kk">
-          Егер сіз қатыса алсаңыз, төменде үлкен батырманы басыңыз.<br>
-          Егер басмасаңыз, біз сіз келмейсіз деп ойлаймыз.
-        </p>
-        <p class="cta-note content-lang" data-lang="ru">
+        <p class="cta-note">
           Если вы сможете присутствовать, просто нажмите на большую кнопку ниже.
           Если не нажмёте — мы будем считать, что вы не придёте.
-        </p>
-        <p class="cta-note content-lang" data-lang="en">
-          If you can attend, please press the big button below.<br>
-          If you don't click it, we will assume you won't be coming.
         </p>
 
         <form id="rsvpForm" action="PASTE_YOUR_APPS_SCRIPT_WEBAPP_URL_HERE" method="POST" target="submitFrame">
           <input type="hidden" name="token" id="tokenField" value="" />
           <input type="hidden" name="answer" value="YES" />
-          <button id="confirmBtn" class="btn" type="submit">
-            <span class="content-lang active" data-lang="kk">Келемін</span>
-            <span class="content-lang" data-lang="ru">Я приду</span>
-            <span class="content-lang" data-lang="en">I will come</span>
-          </button>
+          <button id="confirmBtn" class="btn" type="submit">Я приду / I will come / Келемін</button>
         </form>
 
         <iframe name="submitFrame"></iframe>
         <div id="result" class="result"></div>
       </section>
 
-      <section class="lang content-lang active" data-lang="kk">
-        <h2>Қазақша</h2>
-        <p>
-          Құрметті қонақтар!<br>
-          Сіздерді үйлену тойымызға қуана шақырамыз.<br>
-          Жоғарыдағы батырманы басып, қатысатыныңызды растауыңызды сұраймыз.
-        </p>
-      </section>
-
-      <section class="lang content-lang" data-lang="ru">
+      <section class="lang">
         <h2>Русский</h2>
         <p>
           Дорогие гости!<br>
@@ -356,7 +198,16 @@
         </p>
       </section>
 
-      <section class="lang content-lang" data-lang="en">
+      <section class="lang">
+        <h2>Қазақша</h2>
+        <p>
+          Құрметті қонақтар!<br>
+          Сіздерді үйлену тойымызға қуана шақырамыз.<br>
+          Жоғарыдағы батырманы басып, қатысатыныңызды растауыңызды сұраймыз.
+        </p>
+      </section>
+
+      <section class="lang">
         <h2>English</h2>
         <p>
           Dear guests,<br>
@@ -366,132 +217,55 @@
       </section>
 
       <div class="links">
-        <a href="https://2gis.kz" target="_blank" rel="noopener noreferrer">
-          <span class="content-lang active" data-lang="kk">Картаны ашу</span>
-          <span class="content-lang" data-lang="ru">Открыть карту</span>
-          <span class="content-lang" data-lang="en">Open map</span>
-        </a>
+        <a href="https://2gis.kz" target="_blank" rel="noopener noreferrer">Открыть карту</a>
       </div>
 
       <div class="small">
-        <span class="content-lang active" data-lang="kk">Растау 10 тамызда 2026 жылы 23:59-ға дейін қабылданады.</span>
-        <span class="content-lang" data-lang="ru">Подтверждение принимается до 10 августа 2026, 23:59.</span>
-        <span class="content-lang" data-lang="en">Confirmation accepted until August 10, 2026, 23:59.</span>
+        Подтверждение принимается до 10 августа 2026, 23:59.
       </div>
     </div>
-  </div>
+  </main>
 
   <script>
-    // ЗАМЕНИ НА СВОЙ ДЕДЛАЙН В ISO-ФОРМАТЕ
     const DEADLINE_ISO = '2026-08-10T23:59:00+05:00';
 
-    // Language switching
-    let currentLang = localStorage.getItem('selectedLang') || 'kk';
-
-    function setLanguage(lang) {
-      currentLang = lang;
-      localStorage.setItem('selectedLang', lang);
-      
-      // Update button states
-      document.querySelectorAll('.lang-btn').forEach(btn => {
-        btn.classList.remove('active');
-        if (btn.getAttribute('data-lang') === lang) {
-          btn.classList.add('active');
-        }
-      });
-      
-      // Update content visibility
-      document.querySelectorAll('.content-lang').forEach(elem => {
-        elem.classList.remove('active');
-        if (elem.getAttribute('data-lang') === lang) {
-          elem.classList.add('active');
-        }
-      });
-    }
-
-    // Add click listeners to language buttons
-    document.querySelectorAll('.lang-btn').forEach(btn => {
-      btn.addEventListener('click', function() {
-        setLanguage(this.getAttribute('data-lang'));
-      });
-    });
-
-    // Set initial language
-    setLanguage(currentLang);
-
-    const token = (new URLSearchParams(window.location.search).get('t') || '').trim().toUpperCase();
     const form = document.getElementById('rsvpForm');
-    const tokenField = document.getElementById('tokenField');
     const btn = document.getElementById('confirmBtn');
     const result = document.getElementById('result');
 
-    tokenField.value = token;
+    const introOverlay = document.getElementById('introOverlay');
+    const introVideo = document.getElementById('introVideo');
+    const whiteFlash = document.getElementById('whiteFlash');
+    const siteContent = document.getElementById('siteContent');
 
     if (!token) {
       btn.disabled = true;
-      showError(getLocalizedText('invalidLink'));
+      showError('Ссылка недействительна: отсутствует токен.');
     }
 
     form.addEventListener('submit', function (e) {
-      if (!token) {
+      if (form.action.indexOf('PASTE_YOUR_TALLY_FORM_ID') !== -1) {
         e.preventDefault();
-        showError(getLocalizedText('invalidLink'));
+        showError('Ссылка недействительна: отсутствует токен.');
         return;
       }
 
       if (form.action.indexOf('PASTE_YOUR_APPS_SCRIPT_WEBAPP_URL_HERE') !== -1) {
         e.preventDefault();
-        showError(getLocalizedText('noUrl'));
+        showError('В index.html не вставлен URL Apps Script web app.');
         return;
       }
 
       btn.disabled = true;
-      const originalText = btn.textContent;
-      btn.textContent = getLocalizedText('saving');
+      btn.textContent = 'Сохраняем...';
 
       // обычный cross-origin POST в скрытый iframe
       setTimeout(function () {
         result.className = 'result ok';
-        result.textContent = getLocalizedText('success');
+        result.textContent = 'Спасибо! Если токен корректный, ваш ответ сохранён.';
         btn.style.display = 'none';
       }, 900);
     });
-
-    function getLocalizedText(key) {
-      const texts = {
-        invalidLink: {
-          kk: 'Сілтеме жарамсыз: токен жоқ.',
-          ru: 'Ссылка недействительна: отсутствует токен.',
-          en: 'Invalid link: token is missing.'
-        },
-        noUrl: {
-          kk: 'index.html-де Apps Script веб-қолданбасы URL-і енгізілмеген.',
-          ru: 'В index.html не вставлен URL Apps Script web app.',
-          en: 'Apps Script web app URL not set in index.html'
-        },
-        saving: {
-          kk: 'Сақтаймыз...',
-          ru: 'Сохраняем...',
-          en: 'Saving...'
-        },
-        success: {
-          kk: 'Рахмет! Егер токен дұрыс болса, сіздің жауабыңыз сақталды.',
-          ru: 'Спасибо! Если токен корректный, ваш ответ сохранён.',
-          en: 'Thank you! If the token is valid, your response has been saved.'
-        },
-        deadlineError: {
-          kk: 'Қате: DEADLINE_ISO-да тасымалау қатесі.',
-          ru: 'Ошибка: неверный формат DEADLINE_ISO в index.html.',
-          en: 'Error: Invalid DEADLINE_ISO format in index.html.'
-        },
-        closed: {
-          kk: 'Растау жабық',
-          ru: 'Подтверждение закрыто',
-          en: 'Confirmation closed'
-        }
-      };
-      return texts[key][currentLang] || texts[key]['en'];
-    }
 
     function showError(message) {
       result.className = 'result err';
