@@ -1,81 +1,54 @@
 # Wedding invite starter for GitHub Pages
 
 Внутри:
-- `index.html` — сам сайт для GitHub Pages
+- `index.html` — сайт для GitHub Pages с анимацией: интро-видео → белая вспышка → плавный выход сайта
 - `.nojekyll` — чтобы GitHub Pages не лез в Jekyll
-- `apps-script/Code.gs` — минимальный backend для записи `YES` в Google Sheets
+- `apps-script/Code.gs` — legacy-вариант (если когда-нибудь захотите вернуть Google Sheets)
 
-## 1. Что должно быть в Google Sheets
+## Текущий сценарий: подтверждение через Tally
 
-Название листа:
-`Guests`
+Без Apps Script и без Google-плашек.
 
-Строка заголовков:
-`token | guest_name | status | confirmed_at | link`
+Если кнопка не ведёт в форму: проверь, что в `index.html` заменён `PASTE_YOUR_TALLY_FORM_ID` на реальную ссылку и что в проекте нет старой версии страницы с токенами.
 
-Пример:
-`E3935D5188A9 | Гость1 | | |`
+Гость:
+- вводит **имя**
+- выбирает **количество гостей**
+- нажимает кнопку **«Приду»**
+- сайт перенаправляет в вашу форму Tally
 
-## 2. Что заменить в `apps-script/Code.gs`
+## 1. Что заменить в `index.html`
 
-Вставь ID своей таблицы:
+Найди в форме:
 
-```js
-const SPREADSHEET_ID = 'PASTE_YOUR_GOOGLE_SHEET_ID_HERE';
-```
+`https://tally.so/r/PASTE_YOUR_TALLY_FORM_ID`
 
-## 3. Как задеплоить Apps Script
+и вставь свою ссылку Tally (пример: `https://tally.so/r/abcd12`).
 
-1. В Google Sheets: Extensions -> Apps Script
-2. Вставь `Code.gs`
-3. Deploy -> New deployment
-4. Type: Web app
-5. Execute as: Me
-6. Who has access: Anyone
-7. Deploy
-8. Скопируй URL вида `https://script.google.com/macros/s/.../exec`
+## 2. Поля формы
 
-## 4. Что заменить в `index.html`
+На странице используются:
+- `guestName` — имя
+- `guestCount` — количество гостей
 
-Найди:
+Создай аналогичные поля в Tally.
 
-`PASTE_YOUR_APPS_SCRIPT_WEBAPP_URL_HERE`
+На странице также есть переключатель языков: **RU / KZ / EN**.
 
-и вставь туда URL веб-приложения из Apps Script.
+## 3. Интро-видео
 
-Если надо — отредактируй:
-- имена пары
-- дату
-- время
-- место
-- адрес
-- ссылку на карту
-- `DEADLINE_ISO`
+Положи видео в:
 
-## 5. Как выложить на GitHub Pages
+`assets/intro.mp4`
 
-Лучше репозиторий назвать:
-`yorozuya667.github.io`
+или поменяй путь в строке:
 
-Потом:
+`<source src="assets/intro.mp4" type="video/mp4" />`
+
+## 4. Как выложить на GitHub Pages
+
 1. Загрузи `index.html` и `.nojekyll`
-2. Settings -> Pages
+2. Settings → Pages
 3. Source: Deploy from a branch
 4. Branch: main
 5. Folder: / (root)
-
-## 6. Формула персональных ссылок в Google Sheets
-
-В `E2`:
-
-```excel
-=ARRAYFORMULA(ЕСЛИ(A2:A="";"";"https://yorozuya667.github.io/?t="&A2:A))
-```
-
-## 7. Что будет происходить
-
-- гость открывает персональную ссылку
-- нажимает кнопку
-- браузер отправляет POST в Apps Script
-- Apps Script ищет токен в таблице
-- если токен найден и статус пустой — пишет `YES` и время

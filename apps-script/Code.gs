@@ -1,45 +1,46 @@
 const SPREADSHEET_ID = 'PASTE_YOUR_GOOGLE_SHEET_ID_HERE';
 const SHEET_NAME = 'Guests';
 
-function doGet(e) {
-  return ContentService
-    .createTextOutput('OK')
-    .setMimeType(ContentService.MimeType.TEXT);
+function doGet() {
+  return jsonResponse_({
+    ok: true,
+    message: 'Wedding RSVP API is running'
+  });
 }
 
 function doPost(e) {
   try {
-    const token = normalize_(e && e.parameter && e.parameter.token);
-    const answer = normalize_(e && e.parameter && e.parameter.answer);
+    const guestName = sanitizeName_(e && e.parameter && e.parameter.guestName);
+    const guestCount = sanitizeCount_(e && e.parameter && e.parameter.guestCount);
 
-    if (!token) {
-      return textResponse_('Missing token');
+    if (!guestName) {
+      return jsonResponse_({ ok: false, error: 'Guest name is required' });
     }
 
-    if (answer !== 'YES') {
-      return textResponse_('Unsupported answer');
+    if (!guestCount) {
+      return jsonResponse_({ ok: false, error: 'Guest count is required' });
     }
 
     const sheet = getSheet_();
-    const row = findRowByToken_(sheet, token);
+    ensureHeader_(sheet);
 
-    if (!row) {
-      return textResponse_('Token not found: ' + token);
-    }
+    sheet.appendRow([
+      guestName,
+      guestCount,
+      new Date(),
+      'web-form'
+    ]);
 
-    const status = normalize_(sheet.getRange(row, 3).getDisplayValue());
-
-    if (status === 'YES') {
-      return textResponse_('Already confirmed');
-    }
-
-    sheet.getRange(row, 3).setValue('YES');
-    sheet.getRange(row, 4).setValue(new Date());
     SpreadsheetApp.flush();
 
-    return textResponse_('Saved');
+    return jsonResponse_({
+      ok: true,
+      message: 'Saved',
+      guestName: guestName,
+      guestCount: guestCount
+    });
   } catch (err) {
-    return textResponse_('Error: ' + err.message);
+    return jsonResponse_({ ok: false, error: err.message });
   }
 }
 
@@ -52,28 +53,33 @@ function getSheet_() {
   return sheet;
 }
 
-function findRowByToken_(sheet, token) {
-  const lastRow = sheet.getLastRow();
-  if (lastRow < 2) return null;
+function ensureHeader_(sheet) {
+  if (sheet.getLastRow() > 0) return;
 
-  const values = sheet.getRange(2, 1, lastRow - 1, 1).getDisplayValues();
-
-  for (let i = 0; i < values.length; i++) {
-    const current = normalize_(values[i][0]);
-    if (current === token) {
-      return i + 2;
-    }
-  }
-
-  return null;
+  sheet.getRange(1, 1, 1, 4).setValues([[
+    'guest_name',
+    'guest_count',
+    'submitted_at',
+    'source'
+  ]]);
 }
 
-function normalize_(value) {
-  return String(value == null ? '' : value).trim().toUpperCase();
+function sanitizeName_(value) {
+  return String(value == null ? '' : value).trim();
 }
 
-function textResponse_(text) {
+function sanitizeCount_(value) {
+  const normalized = String(value == null ? '' : value).trim();
+  const parsed = Number(normalized);
+
+  if (!Number.isFinite(parsed)) return null;
+
+  const safe = Math.max(1, Math.min(20, Math.round(parsed)));
+  return safe;
+}
+
+function jsonResponse_(payload) {
   return ContentService
-    .createTextOutput(text)
-    .setMimeType(ContentService.MimeType.TEXT);
+    .createTextOutput(JSON.stringify(payload))
+    .setMimeType(ContentService.MimeType.JSON);
 }

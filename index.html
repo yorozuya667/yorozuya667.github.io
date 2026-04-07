@@ -3,373 +3,339 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Wedding Invitation</title>
+  <title>Талант & Мадина — Wedding Invite</title>
   <style>
-    :root{
-      --bg:#f7f3ee;
-      --card:#ffffff;
-      --soft:#faf7f2;
-      --text:#2b2b2b;
-      --muted:#6b675f;
-      --accent:#b88c55;
-      --accent-dark:#9e7442;
-      --ok-bg:#eef7ee;
-      --ok-text:#1f5d1f;
-      --err-bg:#fdecec;
-      --err-text:#8a2d2d;
+    :root {
+      --bg:#f5f1ea;
+      --bg2:#efe4d7;
+      --card:#fffffff0;
+      --stroke:#e5d6c3;
+      --text:#2d2217;
+      --muted:#715f4a;
+      --accent:#b78954;
+      --accent2:#9d6b37;
+      --ok-bg:#eef8ef;
+      --ok-text:#1f5e2f;
+      --err-bg:#fdeef0;
+      --err-text:#8f2e3f;
     }
+
     *{box-sizing:border-box}
     body{
       margin:0;
-      font-family:Arial,system-ui,sans-serif;
       color:var(--text);
-      background:linear-gradient(180deg,#fbf7f2 0%,#f5efe7 100%);
+      font-family: "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background:
+        radial-gradient(900px 600px at 10% -10%, #f8efe2 0%, transparent 60%),
+        radial-gradient(900px 600px at 100% 0%, #f6e9db 0%, transparent 58%),
+        linear-gradient(180deg, var(--bg) 0%, var(--bg2) 100%);
+      min-height:100vh;
     }
-    .wrap{
-      max-width:840px;
-      margin:0 auto;
-      padding:24px 16px 48px;
-    }
-    .card{
-      background:rgba(255,255,255,.92);
-      border:1px solid rgba(255,255,255,.6);
-      border-radius:28px;
-      padding:24px;
-      box-shadow:0 10px 28px rgba(0,0,0,.08);
-      backdrop-filter: blur(6px);
-    }
-    .hero{
-      text-align:center;
-      padding:12px 0 8px;
-    }
-    .eyebrow{
-      display:inline-block;
-      padding:8px 14px;
-      border-radius:999px;
-      background:#f0e7da;
-      font-size:14px;
-      font-weight:700;
-      margin-bottom:14px;
-    }
-    h1{
-      margin:0 0 12px;
-      font-size:36px;
-      line-height:1.15;
-    }
-    .lead{
-      margin:0 auto 22px;
-      max-width:580px;
-      font-size:18px;
-      line-height:1.6;
-      color:var(--muted);
-    }
-    .grid{
-      display:grid;
-      gap:14px;
-      margin:22px 0;
-    }
-    @media (min-width:700px){
-      .grid{grid-template-columns:1fr 1fr}
-      h1{font-size:52px}
-    }
-    .info{
-      background:var(--soft);
-      border-radius:20px;
-      padding:18px;
-    }
-    .label{
-      font-size:12px;
-      font-weight:800;
-      letter-spacing:.08em;
-      text-transform:uppercase;
-      color:#8b857b;
-      margin-bottom:8px;
-    }
-    .value{
-      font-size:22px;
-      font-weight:800;
-      line-height:1.4;
-    }
-    .timer-wrap{
-      margin:28px 0 10px;
-      text-align:center;
-    }
-    .timer-title{
-      margin:0 0 14px;
-      font-size:16px;
-      font-weight:700;
-      color:var(--muted);
-    }
-    .timer{
-      display:grid;
-      grid-template-columns:repeat(4,1fr);
-      gap:12px;
-    }
-    .timer-box{
-      background:var(--soft);
-      border-radius:20px;
-      padding:14px 8px;
-    }
-    .timer-num{
-      display:block;
-      font-size:30px;
-      font-weight:900;
-      font-variant-numeric:tabular-nums;
-    }
-    .timer-label{
-      display:block;
-      margin-top:6px;
-      font-size:12px;
-      text-transform:uppercase;
-      letter-spacing:.06em;
-      color:#8b857b;
-      font-weight:700;
-    }
-    .cta{
-      margin:28px 0 10px;
-    }
-    .cta-note{
-      text-align:center;
-      color:var(--muted);
-      margin:0 0 14px;
-      line-height:1.6;
-    }
+
+    .intro-overlay{position:fixed;inset:0;z-index:9999;background:#000;display:flex;align-items:center;justify-content:center;overflow:hidden;transition:opacity .9s ease}
+    .intro-overlay.hidden{opacity:0;pointer-events:none}
+    .intro-video{width:100%;height:100%;object-fit:cover}
+    .white-flash{position:absolute;inset:0;background:#fff;opacity:0}
+    .white-flash.active{animation:flash .55s ease forwards}
+    @keyframes flash{0%{opacity:0}38%{opacity:.95}100%{opacity:0}}
+
+    .site-content{opacity:0;transform:translateY(18px);transition:opacity .9s ease, transform .9s ease}
+    .site-content.visible{opacity:1;transform:translateY(0)}
+
+    .wrap{max-width:920px;margin:0 auto;padding:26px 16px 56px}
+    .card{background:var(--card);border:1px solid var(--stroke);border-radius:28px;padding:24px;box-shadow:0 18px 45px #7555331f}
+
+    .topbar{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+    .eyebrow{display:inline-block;padding:8px 13px;border-radius:999px;background:#f6eee3;border:1px solid #e5d6c3;font-size:12px;font-weight:700;letter-spacing:.04em}
+    .lang-switch{display:flex;gap:6px}
+    .lang-btn{border:1px solid #d8c7b1;background:#fff;border-radius:10px;padding:7px 10px;font-weight:700;color:#6e5436;cursor:pointer}
+    .lang-btn.active{background:linear-gradient(180deg,#c79a62,#a8743d);color:#fff;border-color:#a8743d}
+
+    .hero{text-align:center;padding-top:8px}
+    h1{margin:14px 0 8px;font-family:"Playfair Display", Georgia, serif;font-size:clamp(34px,7vw,58px);line-height:1.08}
+    .lead{margin:0 auto;max-width:630px;line-height:1.7;color:var(--muted)}
+
+    .grid{display:grid;gap:12px;margin-top:24px}
+    @media (min-width:760px){.grid{grid-template-columns:1fr 1fr}}
+    .info{background:#fff;border:1px solid #ead9c4;border-radius:18px;padding:16px}
+    .label{font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:#96744f;font-weight:800}
+    .value{font-size:22px;font-weight:800;margin-top:5px}
+
+    .timer-wrap{margin-top:26px}
+    .timer-title{text-align:center;color:var(--muted);margin:0 0 10px}
+    .timer{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+    .timer-box{background:#fff;border:1px solid #ead9c4;border-radius:16px;padding:11px 8px;text-align:center}
+    .timer-num{display:block;font-size:28px;font-weight:900;font-variant-numeric:tabular-nums}
+    .timer-label{font-size:11px;text-transform:uppercase;color:#9a7b59}
+
+    .cta{margin-top:28px}
+    .cta-note{text-align:center;color:#70593f;line-height:1.6;margin:0 0 12px}
+    .field-grid{display:grid;gap:10px}
+    @media (min-width:760px){.field-grid{grid-template-columns:1fr 1fr}}
+    .field{display:flex;flex-direction:column;gap:6px}
+    .field label{font-size:14px;font-weight:700;color:#5f472c}
+    .field input{border:1px solid #ddc8ad;border-radius:13px;padding:12px;font-size:16px;background:#fff;color:#2d2217}
+    .field input:focus{outline:none;border-color:#bc8b56;box-shadow:0 0 0 3px #bc8b5629}
+
     .btn{
-      width:100%;
-      border:0;
-      border-radius:20px;
-      padding:22px 18px;
-      font-size:28px;
-      font-weight:900;
-      color:#fff;
-      background:linear-gradient(180deg,var(--accent) 0%,var(--accent-dark) 100%);
-      cursor:pointer;
-      box-shadow:0 10px 22px rgba(184,140,85,.28);
+      width:100%;margin-top:12px;border:0;border-radius:15px;
+      background:linear-gradient(180deg,var(--accent),var(--accent2));
+      color:#fff !important;
+      padding:16px 14px;font-size:24px;font-weight:900;letter-spacing:.01em;
+      text-shadow:0 1px 2px #00000033;
+      cursor:pointer;box-shadow:0 14px 26px #8f60352e;
     }
-    .btn:hover{filter:brightness(1.03)}
-    .btn:disabled{
-      opacity:.75;
-      cursor:default;
-      filter:none;
-    }
-    .result{
-      display:none;
-      margin-top:14px;
-      padding:16px;
-      border-radius:16px;
-      font-weight:700;
-      line-height:1.5;
-      text-align:center;
-    }
+    .btn:disabled{opacity:.75;cursor:default}
+
+    .result{display:none;margin-top:12px;padding:12px;border-radius:12px;font-weight:700;text-align:center}
     .result.ok{display:block;background:var(--ok-bg);color:var(--ok-text)}
     .result.err{display:block;background:var(--err-bg);color:var(--err-text)}
-    .lang{
-      margin-top:22px;
-      padding-top:22px;
-      border-top:1px solid #eee5d9;
-    }
-    .lang h2{
-      margin:0 0 8px;
-      font-size:21px;
-    }
-    .lang p{
-      margin:0;
-      line-height:1.8;
-      color:var(--text);
-    }
-    .links{
-      margin-top:18px;
-      text-align:center;
-    }
-    .links a{
-      color:#6f4e2f;
-      font-weight:700;
-      text-decoration:none;
-    }
-    .small{
-      margin-top:20px;
-      text-align:center;
-      color:var(--muted);
-      font-size:14px;
-    }
-    iframe[name="submitFrame"]{
-      width:0;height:0;border:0;position:absolute;left:-9999px;top:-9999px;
-    }
+
+    .links,.small{text-align:center}
+    .links{margin-top:16px}
+    .links a{color:#7f5b33;font-weight:700;text-decoration:none}
+    .small{margin-top:14px;color:#7a6650}
   </style>
 </head>
 <body>
-  <div class="wrap">
-    <div class="card">
-      <section class="hero">
-        <div class="eyebrow">Wedding Invitation</div>
-        <h1>Талант &amp; Мадина</h1>
-        <p class="lead">
-          Дорогие гости, будем очень рады разделить с вами наш особенный день.
-        </p>
-      </section>
-
-      <section class="grid">
-        <div class="info">
-          <div class="label">Дата</div>
-          <div class="value">15 августа 2026</div>
-        </div>
-        <div class="info">
-          <div class="label">Время</div>
-          <div class="value">17:00</div>
-        </div>
-        <div class="info">
-          <div class="label">Место</div>
-          <div class="value">Astana, Saltanat Hall</div>
-        </div>
-        <div class="info">
-          <div class="label">Адрес</div>
-          <div class="value">г. Астана, пример адреса 10</div>
-        </div>
-      </section>
-
-      <section class="timer-wrap">
-        <p class="timer-title">До окончания подтверждения</p>
-        <div class="timer">
-          <div class="timer-box"><span class="timer-num" id="days">--</span><span class="timer-label">дней</span></div>
-          <div class="timer-box"><span class="timer-num" id="hours">--</span><span class="timer-label">часов</span></div>
-          <div class="timer-box"><span class="timer-num" id="mins">--</span><span class="timer-label">минут</span></div>
-          <div class="timer-box"><span class="timer-num" id="secs">--</span><span class="timer-label">секунд</span></div>
-        </div>
-      </section>
-
-      <section class="cta">
-        <p class="cta-note">
-          Если вы сможете присутствовать, просто нажмите на большую кнопку ниже.
-          Если не нажмёте — мы будем считать, что вы не придёте.
-        </p>
-
-        <form id="rsvpForm" action="PASTE_YOUR_APPS_SCRIPT_WEBAPP_URL_HERE" method="POST" target="submitFrame">
-          <input type="hidden" name="token" id="tokenField" value="" />
-          <input type="hidden" name="answer" value="YES" />
-          <button id="confirmBtn" class="btn" type="submit">Я приду / I will come / Келемін</button>
-        </form>
-
-        <iframe name="submitFrame"></iframe>
-        <div id="result" class="result"></div>
-      </section>
-
-      <section class="lang">
-        <h2>Русский</h2>
-        <p>
-          Дорогие гости!<br>
-          Будем счастливы видеть вас на нашей свадьбе.<br>
-          Пожалуйста, подтвердите участие нажатием на кнопку выше.
-        </p>
-      </section>
-
-      <section class="lang">
-        <h2>Қазақша</h2>
-        <p>
-          Құрметті қонақтар!<br>
-          Сіздерді үйлену тойымызға қуана шақырамыз.<br>
-          Жоғарыдағы батырманы басып, қатысатыныңызды растауыңызды сұраймыз.
-        </p>
-      </section>
-
-      <section class="lang">
-        <h2>English</h2>
-        <p>
-          Dear guests,<br>
-          We would be happy to see you at our wedding.<br>
-          Please confirm your attendance by pressing the button above.
-        </p>
-      </section>
-
-      <div class="links">
-        <a href="https://2gis.kz" target="_blank" rel="noopener noreferrer">Открыть карту</a>
-      </div>
-
-      <div class="small">
-        Подтверждение принимается до 10 августа 2026, 23:59.
-      </div>
-    </div>
+  <div id="introOverlay" class="intro-overlay" aria-hidden="true">
+    <video id="introVideo" class="intro-video" autoplay muted playsinline preload="auto">
+      <source src="assets/intro.mp4" type="video/mp4" />
+    </video>
+    <div id="whiteFlash" class="white-flash"></div>
   </div>
 
-  <script>
-    // ЗАМЕНИ НА СВОЙ ДЕДЛАЙН В ISO-ФОРМАТЕ
-    const DEADLINE_ISO = '2026-08-10T23:59:00+05:00';
+  <main id="siteContent" class="site-content">
+    <div class="wrap">
+      <div class="card">
+        <div class="topbar">
+          <div class="eyebrow" data-i18n="badge">Wedding Invitation</div>
+          <div class="lang-switch">
+            <button class="lang-btn active" type="button" data-lang="ru">RU</button>
+            <button class="lang-btn" type="button" data-lang="kz">KZ</button>
+            <button class="lang-btn" type="button" data-lang="en">EN</button>
+          </div>
+        </div>
 
-    const token = (new URLSearchParams(window.location.search).get('t') || '').trim().toUpperCase();
+        <section class="hero">
+          <h1>Талант &amp; Мадина</h1>
+          <p class="lead" data-i18n="lead">Дорогие гости, будем очень рады разделить с вами наш особенный день.</p>
+        </section>
+
+        <section class="grid">
+          <div class="info"><div class="label" data-i18n="dateLabel">Дата</div><div class="value">15 августа 2026</div></div>
+          <div class="info"><div class="label" data-i18n="timeLabel">Время</div><div class="value">17:00</div></div>
+          <div class="info"><div class="label" data-i18n="placeLabel">Место</div><div class="value">Astana, Saltanat Hall</div></div>
+          <div class="info"><div class="label" data-i18n="addressLabel">Адрес</div><div class="value">г. Астана, пример адреса 10</div></div>
+        </section>
+
+        <section class="timer-wrap">
+          <p class="timer-title" data-i18n="timerTitle">До окончания подтверждения</p>
+          <div class="timer">
+            <div class="timer-box"><span class="timer-num" id="days">--</span><span class="timer-label" data-i18n="days">дней</span></div>
+            <div class="timer-box"><span class="timer-num" id="hours">--</span><span class="timer-label" data-i18n="hours">часов</span></div>
+            <div class="timer-box"><span class="timer-num" id="mins">--</span><span class="timer-label" data-i18n="mins">минут</span></div>
+            <div class="timer-box"><span class="timer-num" id="secs">--</span><span class="timer-label" data-i18n="secs">секунд</span></div>
+          </div>
+        </section>
+
+        <section class="cta">
+          <p class="cta-note" data-i18n="ctaNote">Введите имя и количество гостей, нажмите «Приду» — и мы перенаправим вас в Tally.</p>
+          <form id="rsvpForm" action="https://tally.so/r/PASTE_YOUR_TALLY_FORM_ID" method="GET" novalidate>
+            <div class="field-grid">
+              <div class="field">
+                <label for="guestName" data-i18n="nameLabel">Ваше имя</label>
+                <input id="guestName" name="guestName" type="text" minlength="2" required data-i18n-ph="namePlaceholder" placeholder="Например, Айгерим" />
+              </div>
+              <div class="field">
+                <label for="guestCount" data-i18n="countLabel">Количество гостей</label>
+                <input id="guestCount" name="guestCount" type="number" min="1" max="10" step="1" required value="1" />
+              </div>
+            </div>
+            <button id="confirmBtn" class="btn" type="submit" data-i18n="submitBtn">Приду</button>
+          </form>
+          <div id="result" class="result"></div>
+        </section>
+
+        <div class="links"><a href="https://2gis.kz" target="_blank" rel="noopener noreferrer" data-i18n="map">Открыть карту</a></div>
+        <div class="small" data-i18n="deadline">Подтверждение принимается до 10 августа 2026, 23:59.</div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    const DEADLINE_ISO = '2026-08-10T23:59:00+05:00';
+    const INTRO_MIN_MS = 1600;
+    const INTRO_MAX_MS = 6000;
+
+    const i18n = {
+      ru: {
+        badge: 'Wedding Invitation',
+        lead: 'Дорогие гости, будем очень рады разделить с вами наш особенный день.',
+        dateLabel: 'Дата', timeLabel: 'Время', placeLabel: 'Место', addressLabel: 'Адрес',
+        timerTitle: 'До окончания подтверждения', days: 'дней', hours: 'часов', mins: 'минут', secs: 'секунд',
+        ctaNote: 'Введите имя и количество гостей, нажмите «Приду» — и мы перенаправим вас в Tally.',
+        nameLabel: 'Ваше имя', namePlaceholder: 'Например, Айгерим', countLabel: 'Количество гостей',
+        submitBtn: 'Приду', map: 'Открыть карту',
+        deadline: 'Подтверждение принимается до 10 августа 2026, 23:59.',
+        errFields: 'Заполните имя и количество гостей.',
+        errUrl: 'Укажите вашу реальную ссылку Tally в action формы.',
+        moving: 'Открываем форму подтверждения...'
+      },
+      kz: {
+        badge: 'Үйлену тойына шақыру',
+        lead: 'Құрметті қонақтар, ерекше күнімізді сіздермен бірге өткізгіміз келеді.',
+        dateLabel: 'Күні', timeLabel: 'Уақыты', placeLabel: 'Өтетін жері', addressLabel: 'Мекенжайы',
+        timerTitle: 'Растау мерзімі аяқталуына дейін', days: 'күн', hours: 'сағат', mins: 'мин', secs: 'сек',
+        ctaNote: 'Атыңызды және қонақ санын енгізіп, «Барамын» батырмасын басыңыз — Tally-ге өтесіз.',
+        nameLabel: 'Атыңыз', namePlaceholder: 'Мысалы, Айгерім', countLabel: 'Қонақ саны',
+        submitBtn: 'Барамын', map: 'Картаны ашу',
+        deadline: 'Растау 2026 жылғы 10 тамыз, 23:59-ға дейін қабылданады.',
+        errFields: 'Атыңызды және қонақ санын толтырыңыз.',
+        errUrl: 'Форма action ішіне нақты Tally сілтемесін қойыңыз.',
+        moving: 'Растау формасын ашып жатырмыз...'
+      },
+      en: {
+        badge: 'Wedding Invitation',
+        lead: 'Dear guests, we would be happy to share our special day with you.',
+        dateLabel: 'Date', timeLabel: 'Time', placeLabel: 'Venue', addressLabel: 'Address',
+        timerTitle: 'Time left to confirm', days: 'days', hours: 'hours', mins: 'mins', secs: 'secs',
+        ctaNote: 'Enter your name and guest count, then tap “I will come” — we will redirect you to Tally.',
+        nameLabel: 'Your name', namePlaceholder: 'For example, Aigerim', countLabel: 'Guest count',
+        submitBtn: 'I will come', map: 'Open map',
+        deadline: 'Confirmation is accepted until August 10, 2026, 23:59.',
+        errFields: 'Please fill in your name and guest count.',
+        errUrl: 'Please set your real Tally URL in the form action.',
+        moving: 'Opening confirmation form...'
+      }
+    };
+
+    let currentLang = 'ru';
+
     const form = document.getElementById('rsvpForm');
-    const tokenField = document.getElementById('tokenField');
     const btn = document.getElementById('confirmBtn');
     const result = document.getElementById('result');
+    const introOverlay = document.getElementById('introOverlay');
+    const introVideo = document.getElementById('introVideo');
+    const whiteFlash = document.getElementById('whiteFlash');
+    const siteContent = document.getElementById('siteContent');
 
-    tokenField.value = token;
-
-    if (!token) {
-      btn.disabled = true;
-      showError('Ссылка недействительна: отсутствует токен.');
+    function setLang(lang) {
+      currentLang = lang;
+      document.documentElement.lang = lang === 'kz' ? 'kk' : lang;
+      document.querySelectorAll('[data-i18n]').forEach(function(el){
+        const key = el.getAttribute('data-i18n');
+        if (i18n[lang][key]) el.textContent = i18n[lang][key];
+      });
+      document.querySelectorAll('[data-i18n-ph]').forEach(function(el){
+        const key = el.getAttribute('data-i18n-ph');
+        if (i18n[lang][key]) el.placeholder = i18n[lang][key];
+      });
+      document.querySelectorAll('.lang-btn').forEach(function(btnEl){
+        btnEl.classList.toggle('active', btnEl.getAttribute('data-lang') === lang);
+      });
     }
 
+    document.querySelectorAll('.lang-btn').forEach(function(btnEl){
+      btnEl.addEventListener('click', function(){
+        setLang(btnEl.getAttribute('data-lang'));
+      });
+    });
+
+    runIntroAnimation();
+    setLang('ru');
+
     form.addEventListener('submit', function (e) {
-      if (!token) {
-        e.preventDefault();
-        showError('Ссылка недействительна: отсутствует токен.');
+      e.preventDefault();
+
+      const formData = new FormData(form);
+      const guestName = String(formData.get('guestName') || '').trim();
+      const guestCount = String(formData.get('guestCount') || '').trim();
+
+      if (!guestName || guestName.length < 2 || !guestCount) {
+        showError(i18n[currentLang].errFields);
         return;
       }
 
-      if (form.action.indexOf('PASTE_YOUR_APPS_SCRIPT_WEBAPP_URL_HERE') !== -1) {
-        e.preventDefault();
-        showError('В index.html не вставлен URL Apps Script web app.');
+      if (form.action.indexOf('PASTE_YOUR_TALLY_FORM_ID') !== -1) {
+        showError(i18n[currentLang].errUrl);
         return;
       }
 
       btn.disabled = true;
-      btn.textContent = 'Сохраняем...';
+      btn.textContent = i18n[currentLang].moving;
+      result.className = 'result ok';
+      result.textContent = i18n[currentLang].moving;
 
-      // обычный cross-origin POST в скрытый iframe
-      setTimeout(function () {
-        result.className = 'result ok';
-        result.textContent = 'Спасибо! Если токен корректный, ваш ответ сохранён.';
-        btn.style.display = 'none';
-      }, 900);
+      const targetUrl = new URL(form.action, window.location.href);
+      targetUrl.searchParams.set('guestName', guestName);
+      targetUrl.searchParams.set('guestCount', guestCount);
+      window.location.href = targetUrl.toString();
     });
+
+    function runIntroAnimation() {
+      const startAt = Date.now();
+      let finished = false;
+
+      function finishIntro() {
+        if (finished) return;
+        finished = true;
+        const spent = Date.now() - startAt;
+        const delay = Math.max(0, INTRO_MIN_MS - spent);
+
+        setTimeout(function () {
+          whiteFlash.classList.add('active');
+          setTimeout(function () {
+            introOverlay.classList.add('hidden');
+            siteContent.classList.add('visible');
+            setTimeout(function () {
+              introOverlay.style.display = 'none';
+            }, 900);
+          }, 170);
+        }, delay);
+      }
+
+      const hardStop = setTimeout(finishIntro, INTRO_MAX_MS);
+      introVideo.addEventListener('ended', function () {
+        clearTimeout(hardStop);
+        finishIntro();
+      }, { once: true });
+      introVideo.addEventListener('error', function () {
+        clearTimeout(hardStop);
+        finishIntro();
+      }, { once: true });
+      introVideo.play().catch(function () {
+        clearTimeout(hardStop);
+        finishIntro();
+      });
+    }
 
     function showError(message) {
       result.className = 'result err';
       result.textContent = message;
+      btn.disabled = false;
+      btn.textContent = i18n[currentLang].submitBtn;
     }
 
     function tick() {
       const deadline = new Date(DEADLINE_ISO).getTime();
-
       if (Number.isNaN(deadline)) {
-        document.getElementById('days').textContent = '!!';
-        document.getElementById('hours').textContent = '!!';
-        document.getElementById('mins').textContent = '!!';
-        document.getElementById('secs').textContent = '!!';
-        showError('Ошибка: неверный формат DEADLINE_ISO в index.html.');
-        btn.disabled = true;
+        ['days','hours','mins','secs'].forEach(function(id){ document.getElementById(id).textContent='!!'; });
+        showError('DEADLINE_ISO format error');
         return;
       }
 
       const diff = deadline - Date.now();
-
       if (diff <= 0) {
-        document.getElementById('days').textContent = '0';
-        document.getElementById('hours').textContent = '0';
-        document.getElementById('mins').textContent = '0';
-        document.getElementById('secs').textContent = '0';
+        ['days','hours','mins','secs'].forEach(function(id){ document.getElementById(id).textContent='0'; });
         btn.disabled = true;
-        btn.textContent = 'Подтверждение закрыто';
         return;
       }
 
-      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-      const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
-      const mins = Math.floor((diff / (1000 * 60)) % 60);
-      const secs = Math.floor((diff / 1000) % 60);
-
-      document.getElementById('days').textContent = String(days);
-      document.getElementById('hours').textContent = String(hours);
-      document.getElementById('mins').textContent = String(mins);
-      document.getElementById('secs').textContent = String(secs);
+      document.getElementById('days').textContent = String(Math.floor(diff / (1000 * 60 * 60 * 24)));
+      document.getElementById('hours').textContent = String(Math.floor((diff / (1000 * 60 * 60)) % 24));
+      document.getElementById('mins').textContent = String(Math.floor((diff / (1000 * 60)) % 60));
+      document.getElementById('secs').textContent = String(Math.floor((diff / 1000) % 60));
     }
 
     tick();
