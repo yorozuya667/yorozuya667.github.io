@@ -57,17 +57,11 @@
     }
     #siteContent.visible { opacity: 1; transform: translateY(0); }
 
-    /* --- ОГРОМНЫЙ ПЕРЕКЛЮЧАТЕЛЬ ЯЗЫКОВ ПО ЦЕНТРУ --- */
-    .lang-switcher-wrapper {
-      display: flex;
-      justify-content: center;
-      margin-bottom: 40px;
-    }
+    /* --- ОГРОМНЫЙ ПЕРЕКЛЮЧАТЕЛЬ ЯЗЫКОВ --- */
+    .lang-switcher-wrapper { display: flex; justify-content: center; margin-bottom: 40px; }
     .lang-switcher {
-      display: flex; gap: 5px;
-      background: #fff; padding: 6px; border-radius: 40px;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.08);
-      border: 1px solid rgba(184, 140, 85, 0.3);
+      display: flex; gap: 5px; background: #fff; padding: 6px; border-radius: 40px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.08); border: 1px solid rgba(184, 140, 85, 0.3);
     }
     .lang-btn {
       padding: 12px 30px; font-size: 15px; font-weight: 600; letter-spacing: 1px;
@@ -87,16 +81,19 @@
     .info-value { font-family: 'Playfair Display', serif; font-size: 20px; }
     .address-text { font-family: 'Montserrat', sans-serif; font-size: 12px; opacity: 0.8; font-weight: 400; margin-top: 5px; display: block; }
 
-    /* --- КНОПКИ КАРТ --- */
+    /* --- КНОПКИ КАРТ (ТЕПЕРЬ С ИКОНКАМИ) --- */
     .maps-wrapper { margin-bottom: 50px; text-align: center; }
     .maps-title { font-size: 12px; text-transform: uppercase; letter-spacing: 2px; color: var(--accent); margin-bottom: 20px; }
     .maps-container { display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; }
     .map-btn {
-      padding: 15px 35px; background: #fff; border: 1px solid var(--accent); border-radius: 8px;
+      display: flex; align-items: center; justify-content: center; gap: 10px; /* Выравнивание иконки и текста */
+      padding: 12px 30px; background: #fff; border: 1px solid var(--accent); border-radius: 8px;
       color: var(--text); font-size: 14px; font-weight: 600; letter-spacing: 1px;
       text-decoration: none; transition: all 0.3s; box-shadow: 0 5px 15px rgba(0,0,0,0.03);
     }
+    .map-btn svg { width: 18px; height: 18px; fill: var(--accent); transition: fill 0.3s; }
     .map-btn:hover { background: var(--accent); color: #fff; transform: translateY(-2px); }
+    .map-btn:hover svg { fill: #fff; } /* Иконка становится белой при наведении */
 
     .timer-wrap { margin: 60px 0; text-align: center; }
     .timer { display: flex; justify-content: center; gap: 15px; }
@@ -128,7 +125,6 @@
   </div>
 
   <main id="siteContent">
-    
     <div class="lang-switcher-wrapper">
       <div class="lang-switcher" id="langSwitcher">
         <span class="lang-btn active" data-lang="kz">KZ</span>
@@ -156,8 +152,18 @@
     <div class="maps-wrapper">
       <div class="maps-title" data-i18n="map_title">Картадан ашу</div>
       <div class="maps-container">
-        <a href="https://2gis.kz/almaty/geo/70000001111187725" target="_blank" class="map-btn">2GIS</a>
-        <a href="https://www.google.com/maps/search/?api=1&query=lat,lng?q=43.328333,77.040277" target="_blank" class="map-btn">Google Maps</a>
+        <a href="https://2gis.kz/almaty/geo/70000001111187725" target="_blank" class="map-btn">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+          </svg>
+          2GIS
+        </a>
+        <a href="https://maps.google.com/?q=43.328333,77.040278" target="_blank" class="map-btn">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+          </svg>
+          Google Maps
+        </a>
       </div>
     </div>
 
@@ -177,8 +183,6 @@
   </main>
 
   <script>
-    // --- 1. СЛОВАРЬ ПЕРЕВОДОВ ---
-    // Добавлены адреса с красивым HTML-форматированием (перенос строки и класс address-text)
     const translations = {
       kz: {
         eyebrow: "Үйлену тойына шақыру",
@@ -221,21 +225,16 @@
       }
     };
 
-    // --- 2. ЛОГИКА ПЕРЕКЛЮЧЕНИЯ ЯЗЫКА ---
     function changeLanguage(lang) {
       document.querySelectorAll('[data-i18n]').forEach(el => {
         const key = el.getAttribute('data-i18n');
         if (translations[lang][key]) {
-          // ИСПОЛЬЗУЕМ innerHTML, чтобы срабатывал тег <br> и адреса переносились на новую строку
           el.innerHTML = translations[lang][key];
         }
       });
       document.documentElement.lang = lang;
-
       const tallyBtn = document.getElementById('tallyBtn');
-      if (tallyBtn) {
-        tallyBtn.href = `https://tally.so/r/gDZB0P?lang=${lang}`;
-      }
+      if (tallyBtn) { tallyBtn.href = `https://tally.so/r/gDZB0P?lang=${lang}`; }
     }
 
     document.querySelectorAll('.lang-btn').forEach(btn => {
@@ -246,7 +245,6 @@
       });
     });
 
-    // --- 3. НАСТРОЙКИ АНИМАЦИИ И ТАЙМЕРА ---
     const DEADLINE_ISO = '2026-06-26T16:00:00+05:00'; 
 
     function runIntro() {
