@@ -74,7 +74,6 @@
 
     .hero { text-align: center; margin-bottom: 40px; }
     
-    /* Укрупнили и сделали жирным "Приглашение на свадьбу" */
     .eyebrow { 
       font-size: 16px; 
       font-weight: 600;
@@ -85,13 +84,16 @@
       display: block; 
     }
     
+    /* ФИКС АМПЕРСАНДА: Теперь имена не разрываются некрасиво */
     h1 { 
       font-family: 'Playfair Display', serif !important; 
-      font-size: clamp(42px, 10vw, 72px) !important; 
+      font-size: clamp(40px, 10vw, 72px) !important; 
       margin: 0; 
       font-weight: 400; 
       font-style: italic; 
       line-height: 1.1;
+      display: inline-block;
+      width: 100%;
     }
     
     .lead { 
@@ -105,7 +107,6 @@
     .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 40px 0; }
     .info-item { background: var(--card-bg); border: 1px solid rgba(184, 140, 85, 0.2); padding: 25px; text-align: center; }
     
-    /* Укрупнили заголовки карточек (Дата, Время) */
     .info-label { 
       font-size: 13px; 
       font-weight: 700;
@@ -115,7 +116,6 @@
       color: var(--accent);
     }
     
-    /* Укрупнили и сделали жирным саму информацию */
     .info-value { 
       font-family: 'Playfair Display', serif !important; 
       font-size: 26px !important; 
@@ -123,7 +123,6 @@
       line-height: 1.2;
     }
     
-    /* Укрупнили адрес */
     .address-text { 
       font-family: 'Montserrat', sans-serif; 
       font-size: 15px; 
@@ -189,12 +188,11 @@
       cursor: pointer; box-shadow: 0 5px 15px rgba(0,0,0,0.1);
       transition: all 0.3s;
     }
-    #musicToggle:hover { transform: scale(1.05); }
     #musicToggle svg { width: 24px; height: 24px; fill: var(--accent); }
 
     @media (max-width: 600px) { 
       .info-grid { grid-template-columns: 1fr; } 
-      h1 { font-size: 50px !important; } 
+      h1 { font-size: 44px !important; } /* Чуть уменьшили для мобилок, чтобы влезло */
       .lead { font-size: 22px; } 
     }
   </style>
@@ -234,7 +232,7 @@
     <div id="mainContentBlock">
       <section class="hero">
         <span class="eyebrow" data-i18n="eyebrow">Үйлену тойына шақыру</span>
-        <h1 data-i18n="names">Талант & Мадина</h1>
+        <h1 data-i18n="names">Талант &nbsp;&amp;&nbsp; Мадина</h1>
         <p class="lead" data-i18n="lead">Сіздерді қуанышымызға ортақ болуға шақырамыз</p>
       </section>
 
@@ -296,41 +294,37 @@
     const iconMuted = document.getElementById('icon-muted');
     const iconPlaying = document.getElementById('icon-playing');
 
-    function toggleMusic() {
-      if (bgMusic.paused) {
-        bgMusic.play();
+    function playMusic() {
+      bgMusic.play().then(() => {
         iconMuted.style.display = 'none';
         iconPlaying.style.display = 'block';
+      }).catch(err => console.log("Блокировка звука:", err));
+    }
+
+    function toggleMusic() {
+      if (bgMusic.paused) {
+        playMusic();
       } else {
         bgMusic.pause();
         iconMuted.style.display = 'block';
         iconPlaying.style.display = 'none';
       }
     }
-
     musicToggle.addEventListener('click', toggleMusic);
 
-    // Пытаемся запустить музыку автоматически. 
-    // Если браузер заблокирует, запустим при первом клике по экрану.
-    window.addEventListener('DOMContentLoaded', () => {
-      bgMusic.play().then(() => {
-        iconMuted.style.display = 'none';
-        iconPlaying.style.display = 'block';
-      }).catch(() => {
-        console.log("Автоплей музыки заблокирован браузером. Ждем клика пользователя.");
-        // При первом клике куда угодно - включаем музыку
-        document.body.addEventListener('click', () => {
-          if (bgMusic.paused && bgMusic.currentTime === 0) {
-            toggleMusic();
-          }
-        }, { once: true });
-      });
-    });
+    const enableAudio = () => {
+      playMusic();
+      window.removeEventListener('click', enableAudio);
+      window.removeEventListener('touchstart', enableAudio);
+    };
+    window.addEventListener('click', enableAudio);
+    window.addEventListener('touchstart', enableAudio);
 
+    // --- ПЕРЕВОДЫ ---
     const translations = {
       kz: {
         eyebrow: "Үйлену тойына шақыру",
-        names: "Талант & Мадина",
+        names: "Талант &nbsp;&amp;&nbsp; Мадина",
         lead: "Сіздерді қуанышымызға ортақ болуға шақырамыз",
         lbl_date: "Күні", val_date: "28 маусым 2026",
         lbl_time: "Уақыты", val_time: "16:00",
@@ -345,7 +339,7 @@
       },
       ru: {
         eyebrow: "Приглашение на свадьбу",
-        names: "Талант & Мадина",
+        names: "Талант &nbsp;&amp;&nbsp; Мадина",
         lead: "Рады пригласить вас на наше торжество",
         lbl_date: "Дата", val_date: "28 июня 2026",
         lbl_time: "Время", val_time: "16:00",
@@ -360,7 +354,7 @@
       },
       en: {
         eyebrow: "Wedding Invitation",
-        names: "Talant & Madina",
+        names: "Talant &nbsp;&amp;&nbsp; Madina",
         lead: "We are delighted to invite you to our celebration",
         lbl_date: "Date", val_date: "June 28, 2026",
         lbl_time: "Time", val_time: "4:00 PM",
@@ -383,9 +377,7 @@
         }
       });
       document.documentElement.lang = lang;
-      
       localStorage.setItem('wedding_lang', lang);
-
       const tallyBtn = document.getElementById('tallyBtn');
       if (tallyBtn) { tallyBtn.href = `https://tally.so/r/gDZB0P?lang=${lang}`; }
     }
@@ -400,11 +392,8 @@
 
     const savedLang = localStorage.getItem('wedding_lang') || 'kz';
     document.querySelectorAll('.lang-btn').forEach(b => {
-      if (b.getAttribute('data-lang') === savedLang) {
-        b.classList.add('active');
-      } else {
-        b.classList.remove('active');
-      }
+      if (b.getAttribute('data-lang') === savedLang) b.classList.add('active');
+      else b.classList.remove('active');
     });
     changeLanguage(savedLang);
 
@@ -428,65 +417,52 @@
       const loader = document.getElementById('loader');
       let isTransitioned = false;
 
-      // ЛОГИКА ОБРЕЗКИ ВИДЕО ДЛЯ МОБИЛЬНЫХ
-      if (video) {
-        video.addEventListener('loadedmetadata', () => {
-          if (window.innerWidth <= 600) {
-            video.currentTime = 2; // НАЧИНАЕМ СО ВТОРОЙ СЕКУНДЫ НА ТЕЛЕФОНАХ
-          }
-        });
-      }
-
-      if(video) {
-        video.addEventListener('playing', () => loader.style.opacity = '0');
-        video.addEventListener('waiting', () => loader.style.opacity = '1');
-      }
-
       const showSite = () => {
         if (isTransitioned) return;
         isTransitioned = true;
-
         if(video) video.classList.add('fade-out-video');
         loader.style.opacity = '0';
-
         setTimeout(() => {
           overlay.style.background = '#f9f7f4'; 
           overlay.classList.add('fade-out-overlay');
           site.classList.add('visible');
         }, 1000); 
-        
         setTimeout(() => overlay.style.display = 'none', 3000); 
       };
 
-      if (video) {
-        video.play().catch(() => showSite());
-        
-        // Переход ровно на 7-й секунде
-        video.ontimeupdate = function() {
-          if (video.currentTime >= 7) { 
-            showSite();
-          }
-        };
-        
-        video.onerror = showSite;
-      }
+      const patienceTimer = setTimeout(() => {
+        if (!isTransitioned) showSite();
+      }, 5000);
 
-      setTimeout(() => { if (!isTransitioned) showSite(); }, 12000);
+      if (video) {
+        video.addEventListener('loadedmetadata', () => {
+          if (window.innerWidth <= 600) video.currentTime = 2;
+        });
+        video.addEventListener('playing', () => {
+          clearTimeout(patienceTimer);
+          loader.style.opacity = '0';
+        });
+        video.addEventListener('waiting', () => loader.style.opacity = '1');
+        video.ontimeupdate = function() {
+          if (video.currentTime >= 7) showSite();
+        };
+        video.onerror = showSite;
+        video.play().catch(() => showSite());
+      } else {
+        showSite();
+      }
     }
     
     function updateTimer() {
       const diff = new Date(DEADLINE_ISO) - new Date();
       if (diff <= 0) return; 
-      
       const d = document.getElementById('days'), h = document.getElementById('hours'),
             m = document.getElementById('mins'), s = document.getElementById('secs');
-      
       if (d) d.textContent = Math.floor(diff / 86400000).toString().padStart(2, '0');
       if (h) h.textContent = Math.floor((diff / 3600000) % 24).toString().padStart(2, '0');
       if (m) m.textContent = Math.floor((diff / 60000) % 60).toString().padStart(2, '0');
       if (s) s.textContent = Math.floor((diff / 1000) % 60).toString().padStart(2, '0');
     }
-    
     updateTimer();
     setInterval(updateTimer, 1000);
   </script>
