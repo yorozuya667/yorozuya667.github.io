@@ -92,8 +92,9 @@
       line-height: 1.1;
     }
     
+    /* Увеличенный текст под заголовком и текст благодарности */
     .lead { 
-      font-size: 20px; 
+      font-size: 24px; /* Увеличили с 20px */
       font-weight: 300; 
       margin-top: 25px; 
       opacity: 0.9;
@@ -160,10 +161,17 @@
       border-radius: 8px; margin-top: 40px; box-shadow: 0 20px 50px rgba(0,0,0,0.05);
     }
     #successBlock svg { width: 60px; height: 60px; fill: var(--accent); margin-bottom: 20px; }
+    
+    /* Делаем слово Спасибо еще больше */
+    #successBlock h1 {
+      font-size: clamp(48px, 12vw, 84px) !important;
+      margin-bottom: 15px;
+    }
 
     @media (max-width: 600px) { 
       .info-grid { grid-template-columns: 1fr; } 
       h1 { font-size: 50px !important; } 
+      .lead { font-size: 22px; } /* На телефоне текст тоже крупнее */
     }
   </style>
 </head>
@@ -355,25 +363,22 @@
         if (isTransitioned) return;
         isTransitioned = true;
 
-        // 1. Сначала плавно гасим только само видео
         if(video) video.classList.add('fade-out-video');
         loader.style.opacity = '0';
 
-        // 2. Ждем 1 секунду, пока видео растворяется, затем плавно убираем оверлей и проявляем сайт
         setTimeout(() => {
           overlay.style.background = '#f9f7f4'; 
           overlay.classList.add('fade-out-overlay');
           site.classList.add('visible');
         }, 1000); 
         
-        // 3. Полностью удаляем слой с видео через 3 секунды, чтобы он не мешал нажимать кнопки
         setTimeout(() => overlay.style.display = 'none', 3000); 
       };
 
       if (video) {
         video.play().catch(() => showSite());
         
-        // Следим за временем: как только видео дойдет до 7 секунд — запускаем переход
+        // Переход ровно на 7-й секунде
         video.ontimeupdate = function() {
           if (video.currentTime >= 7) { 
             showSite();
@@ -383,7 +388,6 @@
         video.onerror = showSite;
       }
 
-      // Аварийный таймер: увеличен до 12 секунд (так как видео длится 8 сек)
       setTimeout(() => { if (!isTransitioned) showSite(); }, 12000);
     }
     
