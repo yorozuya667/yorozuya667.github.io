@@ -373,9 +373,11 @@
       if (video) {
         video.play().catch(() => showSite());
         
-        // Когда видео заканчивается само: ждем 0.5 секунды, затем запускаем анимацию растворения
-        video.onended = () => {
-           setTimeout(showSite, 500); 
+        // Следим за временем: как только видео дойдет до 7 секунд — запускаем переход
+        video.ontimeupdate = function() {
+          if (video.currentTime >= 7) { 
+            showSite();
+          }
         };
         
         video.onerror = showSite;
