@@ -57,7 +57,6 @@
     }
     #siteContent.visible { opacity: 1; transform: translateY(0); }
 
-    /* --- ОГРОМНЫЙ ПЕРЕКЛЮЧАТЕЛЬ ЯЗЫКОВ --- */
     .lang-switcher-wrapper { display: flex; justify-content: center; margin-bottom: 40px; }
     .lang-switcher {
       display: flex; gap: 5px; background: #fff; padding: 6px; border-radius: 40px;
@@ -81,19 +80,18 @@
     .info-value { font-family: 'Playfair Display', serif; font-size: 20px; }
     .address-text { font-family: 'Montserrat', sans-serif; font-size: 12px; opacity: 0.8; font-weight: 400; margin-top: 5px; display: block; }
 
-    /* --- КНОПКИ КАРТ (ТЕПЕРЬ С ИКОНКАМИ) --- */
     .maps-wrapper { margin-bottom: 50px; text-align: center; }
     .maps-title { font-size: 12px; text-transform: uppercase; letter-spacing: 2px; color: var(--accent); margin-bottom: 20px; }
     .maps-container { display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; }
     .map-btn {
-      display: flex; align-items: center; justify-content: center; gap: 10px; /* Выравнивание иконки и текста */
+      display: flex; align-items: center; justify-content: center; gap: 10px;
       padding: 12px 30px; background: #fff; border: 1px solid var(--accent); border-radius: 8px;
       color: var(--text); font-size: 14px; font-weight: 600; letter-spacing: 1px;
       text-decoration: none; transition: all 0.3s; box-shadow: 0 5px 15px rgba(0,0,0,0.03);
     }
     .map-btn svg { width: 18px; height: 18px; fill: var(--accent); transition: fill 0.3s; }
     .map-btn:hover { background: var(--accent); color: #fff; transform: translateY(-2px); }
-    .map-btn:hover svg { fill: #fff; } /* Иконка становится белой при наведении */
+    .map-btn:hover svg { fill: #fff; }
 
     .timer-wrap { margin: 60px 0; text-align: center; }
     .timer { display: flex; justify-content: center; gap: 15px; }
@@ -110,6 +108,14 @@
       text-transform: uppercase; letter-spacing: 2px; cursor: pointer; transition: all 0.3s;
     }
     .btn:hover { background: var(--accent); }
+
+    /* --- СТИЛИ ЭКРАНА УСПЕХА --- */
+    #successBlock {
+      display: none; text-align: center; padding: 60px 20px;
+      background: var(--card-bg); border: 1px solid rgba(184, 140, 85, 0.2);
+      border-radius: 8px; margin-top: 40px; box-shadow: 0 20px 50px rgba(0,0,0,0.05);
+    }
+    #successBlock svg { width: 60px; height: 60px; fill: var(--accent); margin-bottom: 20px; }
 
     @media (max-width: 600px) { .info-grid { grid-template-columns: 1fr; } h1 { font-size: 48px; } }
   </style>
@@ -133,52 +139,58 @@
       </div>
     </div>
 
-    <section class="hero">
-      <span class="eyebrow" data-i18n="eyebrow">Үйлену тойына шақыру</span>
-      <h1 data-i18n="names">Талант & Мадина</h1>
-      <p class="lead" data-i18n="lead">Сіздерді қуанышымызға ортақ болуға шақырамыз</p>
-    </section>
+    <div id="mainContentBlock">
+      <section class="hero">
+        <span class="eyebrow" data-i18n="eyebrow">Үйлену тойына шақыру</span>
+        <h1 data-i18n="names">Талант & Мадина</h1>
+        <p class="lead" data-i18n="lead">Сіздерді қуанышымызға ортақ болуға шақырамыз</p>
+      </section>
 
-    <section class="info-grid">
-      <div class="info-item"><div class="info-label" data-i18n="lbl_date">Күні</div><div class="info-value" data-i18n="val_date">26 маусым 2026</div></div>
-      <div class="info-item"><div class="info-label" data-i18n="lbl_time">Уақыты</div><div class="info-value" data-i18n="val_time">16:00</div></div>
-      <div class="info-item">
-        <div class="info-label" data-i18n="lbl_place">Өтетін орны</div>
-        <div class="info-value" data-i18n="val_place">Magauya Grand Hall<br><span class="address-text">Майқы би көшесі, 2/1</span></div>
+      <section class="info-grid">
+        <div class="info-item"><div class="info-label" data-i18n="lbl_date">Күні</div><div class="info-value" data-i18n="val_date">26 маусым 2026</div></div>
+        <div class="info-item"><div class="info-label" data-i18n="lbl_time">Уақыты</div><div class="info-value" data-i18n="val_time">16:00</div></div>
+        <div class="info-item">
+          <div class="info-label" data-i18n="lbl_place">Өтетін орны</div>
+          <div class="info-value" data-i18n="val_place">Magauya Grand Hall<br><span class="address-text">Майқы би көшесі, 2/1</span></div>
+        </div>
+        <div class="info-item"><div class="info-label" data-i18n="lbl_city">Қала</div><div class="info-value" data-i18n="val_city">Алматы</div></div>
+      </section>
+
+      <div class="maps-wrapper">
+        <div class="maps-title" data-i18n="map_title">Картадан ашу</div>
+        <div class="maps-container">
+          <a href="https://2gis.kz/almaty/geo/70000001111187725" target="_blank" class="map-btn">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+            2GIS
+          </a>
+          <a href="https://maps.google.com/?q=43.328333,77.040278" target="_blank" class="map-btn">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+            Google Maps
+          </a>
+        </div>
       </div>
-      <div class="info-item"><div class="info-label" data-i18n="lbl_city">Қала</div><div class="info-value" data-i18n="val_city">Алматы</div></div>
-    </section>
 
-    <div class="maps-wrapper">
-      <div class="maps-title" data-i18n="map_title">Картадан ашу</div>
-      <div class="maps-container">
-        <a href="https://2gis.kz/almaty/geo/70000001111187725" target="_blank" class="map-btn">
-          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
-          </svg>
-          2GIS
-        </a>
-        <a href="https://maps.google.com/?q=43.328333,77.040278" target="_blank" class="map-btn">
-          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
-          </svg>
-          Google Maps
-        </a>
+      <section class="timer-wrap">
+        <div class="timer">
+          <div class="timer-box"><span class="timer-num" id="days">00</span><span class="timer-label" data-i18n="lbl_days">Күн</span></div>
+          <div class="timer-box"><span class="timer-num" id="hours">00</span><span class="timer-label" data-i18n="lbl_hours">Сағат</span></div>
+          <div class="timer-box"><span class="timer-num" id="mins">00</span><span class="timer-label" data-i18n="lbl_mins">Мин</span></div>
+          <div class="timer-box"><span class="timer-num" id="secs">00</span><span class="timer-label" data-i18n="lbl_secs">Сек</span></div>
+        </div>
+      </section>
+
+      <div class="form-card">
+        <h3 data-i18n="form_title">Жауабыңызды күтеміз</h3>
+        <a href="https://tally.so/r/gDZB0P?lang=kz" class="btn" id="tallyBtn" data-i18n="btn_submit">Келемін!</a>
       </div>
     </div>
 
-    <section class="timer-wrap">
-      <div class="timer">
-        <div class="timer-box"><span class="timer-num" id="days">00</span><span class="timer-label" data-i18n="lbl_days">Күн</span></div>
-        <div class="timer-box"><span class="timer-num" id="hours">00</span><span class="timer-label" data-i18n="lbl_hours">Сағат</span></div>
-        <div class="timer-box"><span class="timer-num" id="mins">00</span><span class="timer-label" data-i18n="lbl_mins">Мин</span></div>
-        <div class="timer-box"><span class="timer-num" id="secs">00</span><span class="timer-label" data-i18n="lbl_secs">Сек</span></div>
-      </div>
-    </section>
-
-    <div class="form-card">
-      <h3 data-i18n="form_title">Жауабыңызды күтеміз</h3>
-      <a href="https://tally.so/r/gDZB0P?lang=kz" class="btn" id="tallyBtn" data-i18n="btn_submit">Келемін!</a>
+    <div id="successBlock">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+      </svg>
+      <h1 data-i18n="success_title">Рахмет!</h1>
+      <p class="lead" data-i18n="success_text">Жауабыңыз қабылданды, сізді асыға күтеміз! 🤍</p>
     </div>
   </main>
 
@@ -195,7 +207,9 @@
         map_title: "Картадан ашу", 
         lbl_days: "Күн", lbl_hours: "Сағат", lbl_mins: "Мин", lbl_secs: "Сек",
         form_title: "Жауабыңызды күтеміз",
-        btn_submit: "Келемін!"
+        btn_submit: "Келемін!",
+        success_title: "Рахмет!",
+        success_text: "Жауабыңыз қабылданды, сізді асыға күтеміз! 🤍"
       },
       ru: {
         eyebrow: "Приглашение на свадьбу",
@@ -208,7 +222,9 @@
         map_title: "Открыть на карте", 
         lbl_days: "Дней", lbl_hours: "Часов", lbl_mins: "Мин", lbl_secs: "Сек",
         form_title: "Ждем вашего ответа",
-        btn_submit: "Приду!"
+        btn_submit: "Приду!",
+        success_title: "Спасибо!",
+        success_text: "Ваш ответ принят, с нетерпением ждем вас! 🤍"
       },
       en: {
         eyebrow: "Wedding Invitation",
@@ -221,7 +237,9 @@
         map_title: "Open in Maps", 
         lbl_days: "Days", lbl_hours: "Hours", lbl_mins: "Mins", lbl_secs: "Secs",
         form_title: "We await your reply",
-        btn_submit: "I'll be there!"
+        btn_submit: "I'll be there!",
+        success_title: "Thank you!",
+        success_text: "Your response has been recorded, we look forward to seeing you! 🤍"
       }
     };
 
@@ -233,6 +251,10 @@
         }
       });
       document.documentElement.lang = lang;
+      
+      // Запоминаем язык, чтобы после Tally вернуть тот же
+      localStorage.setItem('wedding_lang', lang);
+
       const tallyBtn = document.getElementById('tallyBtn');
       if (tallyBtn) { tallyBtn.href = `https://tally.so/r/gDZB0P?lang=${lang}`; }
     }
@@ -244,6 +266,30 @@
         changeLanguage(e.target.getAttribute('data-lang'));
       });
     });
+
+    // При загрузке страницы проверяем, есть ли сохраненный язык
+    const savedLang = localStorage.getItem('wedding_lang') || 'kz';
+    document.querySelectorAll('.lang-btn').forEach(b => {
+      if (b.getAttribute('data-lang') === savedLang) {
+        b.classList.add('active');
+      } else {
+        b.classList.remove('active');
+      }
+    });
+    changeLanguage(savedLang);
+
+    // --- ЛОГИКА ЭКРАНА УСПЕХА ---
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('success') === 'true') {
+      // Если гость вернулся из Tally:
+      document.getElementById('introOverlay').style.display = 'none'; // Пропускаем видео
+      document.getElementById('siteContent').classList.add('visible'); // Показываем сайт
+      document.getElementById('mainContentBlock').style.display = 'none'; // Прячем инфо
+      document.getElementById('successBlock').style.display = 'block'; // Показываем "Спасибо"
+    } else {
+      // Обычный запуск с видео
+      runIntro();
+    }
 
     const DEADLINE_ISO = '2026-06-26T16:00:00+05:00'; 
 
@@ -284,8 +330,6 @@
       setTimeout(() => { if (!isTransitioned) showSite(); }, 5000);
     }
     
-    runIntro();
-
     function updateTimer() {
       const diff = new Date(DEADLINE_ISO) - new Date();
       if (diff <= 0) return; 
