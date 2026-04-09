@@ -33,26 +33,13 @@
 
     /* --- ПЕРЕКЛЮЧАТЕЛЬ ЯЗЫКОВ --- */
     .lang-switcher {
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      z-index: 100;
-      display: flex;
-      gap: 15px;
-      font-size: 12px;
-      font-weight: 600;
-      letter-spacing: 2px;
-      opacity: 0; /* Скрыт до окончания видео */
-      transition: opacity 1.5s ease;
+      position: fixed; top: 20px; right: 20px; z-index: 100;
+      display: flex; gap: 15px; font-size: 12px; font-weight: 600;
+      letter-spacing: 2px; opacity: 0; transition: opacity 1.5s ease;
     }
     .lang-switcher.visible { opacity: 1; }
     
-    .lang-btn {
-      color: var(--text);
-      cursor: pointer;
-      opacity: 0.5;
-      transition: opacity 0.3s, color 0.3s;
-    }
+    .lang-btn { color: var(--text); cursor: pointer; opacity: 0.5; transition: opacity 0.3s, color 0.3s; }
     .lang-btn:hover { opacity: 0.8; }
     .lang-btn.active { opacity: 1; color: var(--accent); }
 
@@ -82,15 +69,26 @@
     }
     #siteContent.visible { opacity: 1; transform: translateY(0); }
 
-    .hero { text-align: center; margin-bottom: 50px; }
+    .hero { text-align: center; margin-bottom: 40px; }
     .eyebrow { font-size: 12px; text-transform: uppercase; letter-spacing: 4px; color: var(--accent); margin-bottom: 20px; display: block; }
     h1 { font-family: 'Playfair Display', serif; font-size: clamp(40px, 10vw, 72px); margin: 0; font-weight: 400; font-style: italic; }
     .lead { font-size: 18px; font-weight: 300; margin-top: 20px; opacity: 0.8; }
 
-    .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 40px 0; }
+    .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 30px 0 20px; }
     .info-item { background: var(--card-bg); border: 1px solid rgba(184, 140, 85, 0.2); padding: 25px; text-align: center; }
     .info-label { font-size: 10px; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 10px; opacity: 0.6; }
     .info-value { font-family: 'Playfair Display', serif; font-size: 20px; }
+
+    /* --- КНОПКИ КАРТ --- */
+    .maps-container {
+      display: flex; justify-content: center; gap: 15px; margin-bottom: 40px;
+    }
+    .map-btn {
+      padding: 10px 25px; border: 1px solid var(--accent); border-radius: 4px;
+      text-decoration: none; color: var(--text); font-size: 12px; font-weight: 600;
+      letter-spacing: 1px; transition: all 0.3s; background: transparent;
+    }
+    .map-btn:hover { background: var(--accent); color: #fff; }
 
     .timer-wrap { margin: 60px 0; text-align: center; }
     .timer { display: flex; justify-content: center; gap: 15px; }
@@ -137,9 +135,14 @@
     <section class="info-grid">
       <div class="info-item"><div class="info-label" data-i18n="lbl_date">Күні</div><div class="info-value" data-i18n="val_date">26 маусым 2026</div></div>
       <div class="info-item"><div class="info-label" data-i18n="lbl_time">Уақыты</div><div class="info-value" data-i18n="val_time">16:00</div></div>
-      <div class="info-item"><div class="info-label" data-i18n="lbl_place">Өтетін орны</div><div class="info-value" data-i18n="val_place">Magauyia</div></div>
+      <div class="info-item"><div class="info-label" data-i18n="lbl_place">Өтетін орны</div><div class="info-value" data-i18n="val_place">Magauya Grand Hall</div></div>
       <div class="info-item"><div class="info-label" data-i18n="lbl_city">Қала</div><div class="info-value" data-i18n="val_city">Алматы</div></div>
     </section>
+
+    <div class="maps-container">
+      <a href="https://2gis.kz/almaty/geo/70000001111187725" target="_blank" class="map-btn">2GIS</a>
+      <a href="https://maps.google.com/?q=Magauya+Grand+Hall+Алматы" target="_blank" class="map-btn">Google Maps</a>
+    </div>
 
     <section class="timer-wrap">
       <div class="timer">
@@ -152,7 +155,7 @@
 
     <div class="form-card">
       <h3 data-i18n="form_title">Жауабыңызды күтеміз</h3>
-      <a href="https://tally.so/r/gDZB0P" class="btn" data-i18n="btn_submit">Келемін!</a>
+      <a href="https://tally.so/r/gDZB0P?lang=kz" class="btn" id="tallyBtn" data-i18n="btn_submit">Келемін!</a>
     </div>
   </main>
 
@@ -165,7 +168,7 @@
         lead: "Сіздерді қуанышымызға ортақ болуға шақырамыз",
         lbl_date: "Күні", val_date: "26 маусым 2026",
         lbl_time: "Уақыты", val_time: "16:00",
-        lbl_place: "Өтетін орны", val_place: "Magauyia",
+        lbl_place: "Өтетін орны", val_place: "Magauya Grand Hall",
         lbl_city: "Қала", val_city: "Алматы",
         lbl_days: "Күн", lbl_hours: "Сағат", lbl_mins: "Мин", lbl_secs: "Сек",
         form_title: "Жауабыңызды күтеміз",
@@ -177,7 +180,7 @@
         lead: "Рады пригласить вас на наше торжество",
         lbl_date: "Дата", val_date: "26 июня 2026",
         lbl_time: "Время", val_time: "16:00",
-        lbl_place: "Место", val_place: "Magauyia",
+        lbl_place: "Место", val_place: "Magauya Grand Hall",
         lbl_city: "Город", val_city: "Алматы",
         lbl_days: "Дней", lbl_hours: "Часов", lbl_mins: "Мин", lbl_secs: "Сек",
         form_title: "Ждем вашего ответа",
@@ -189,7 +192,7 @@
         lead: "We are delighted to invite you to our celebration",
         lbl_date: "Date", val_date: "June 26, 2026",
         lbl_time: "Time", val_time: "4:00 PM",
-        lbl_place: "Venue", val_place: "Magauyia",
+        lbl_place: "Venue", val_place: "Magauya Grand Hall",
         lbl_city: "City", val_city: "Almaty",
         lbl_days: "Days", lbl_hours: "Hours", lbl_mins: "Mins", lbl_secs: "Secs",
         form_title: "We await your reply",
@@ -199,7 +202,6 @@
 
     // --- 2. ЛОГИКА ПЕРЕКЛЮЧЕНИЯ ЯЗЫКА ---
     function changeLanguage(lang) {
-      // Меняем тексты на странице
       document.querySelectorAll('[data-i18n]').forEach(el => {
         const key = el.getAttribute('data-i18n');
         if (translations[lang][key]) {
@@ -208,28 +210,23 @@
       });
       document.documentElement.lang = lang;
 
-      // ОБНОВЛЕНИЕ: Передаем выбранный язык в ссылку Tally
-      // Обязательно проверь, что gDZB0P — это твой реальный ID формы!
-      const tallyBtn = document.querySelector('.form-card .btn');
+      const tallyBtn = document.getElementById('tallyBtn');
       if (tallyBtn) {
         tallyBtn.href = `https://tally.so/r/gDZB0P?lang=${lang}`;
       }
     }
 
-    // Слушаем клики по кнопкам языков
     document.querySelectorAll('.lang-btn').forEach(btn => {
       btn.addEventListener('click', (e) => {
-        // Убираем класс active у всех и вешаем на ту, куда кликнули
         document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
         e.target.classList.add('active');
-        
-        // Запускаем функцию смены текста
         changeLanguage(e.target.getAttribute('data-lang'));
       });
     });
 
-    // --- 3. НАСТРОЙКИ И АНИМАЦИЯ (без изменений) ---
-    const DEADLINE_ISO = '2026-08-10T23:59:00+05:00'; 
+    // --- 3. НАСТРОЙКИ (ОБНОВИЛ ДАТУ ДЛЯ ТАЙМЕРА) ---
+    // Установил таймер прямо на день свадьбы
+    const DEADLINE_ISO = '2026-06-26T16:00:00+05:00'; 
 
     function runIntro() {
       const video = document.getElementById('introVideo');
@@ -255,7 +252,7 @@
         setTimeout(() => {
           overlay.classList.add('fade-out-overlay');
           site.classList.add('visible');
-          langSwitcher.classList.add('visible'); // Показываем языки вместе с сайтом
+          langSwitcher.classList.add('visible'); 
         }, 1000); 
         
         setTimeout(() => overlay.style.display = 'none', 2500);
