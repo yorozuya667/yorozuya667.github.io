@@ -31,18 +31,6 @@
       background-image: url('https://www.transparenttextures.com/patterns/felt.png');
     }
 
-    /* --- ПЕРЕКЛЮЧАТЕЛЬ ЯЗЫКОВ --- */
-    .lang-switcher {
-      position: fixed; top: 20px; right: 20px; z-index: 100;
-      display: flex; gap: 15px; font-size: 12px; font-weight: 600;
-      letter-spacing: 2px; opacity: 0; transition: opacity 1.5s ease;
-    }
-    .lang-switcher.visible { opacity: 1; }
-    
-    .lang-btn { color: var(--text); cursor: pointer; opacity: 0.5; transition: opacity 0.3s, color 0.3s; }
-    .lang-btn:hover { opacity: 0.8; }
-    .lang-btn.active { opacity: 1; color: var(--accent); }
-
     /* --- ИНТРО И ЛОАДЕР --- */
     #introOverlay {
       position: fixed; inset: 0; z-index: 9999; background: #000;
@@ -65,30 +53,50 @@
     /* --- КОНТЕНТ САЙТА --- */
     #siteContent {
       position: relative; z-index: 2; opacity: 0; transform: translateY(30px);
-      transition: all 1.5s ease; max-width: 700px; margin: 0 auto; padding: 80px 20px 60px;
+      transition: all 1.5s ease; max-width: 700px; margin: 0 auto; padding: 40px 20px 60px;
     }
     #siteContent.visible { opacity: 1; transform: translateY(0); }
+
+    /* --- ОГРОМНЫЙ ПЕРЕКЛЮЧАТЕЛЬ ЯЗЫКОВ ПО ЦЕНТРУ --- */
+    .lang-switcher-wrapper {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 40px;
+    }
+    .lang-switcher {
+      display: flex; gap: 5px;
+      background: #fff; padding: 6px; border-radius: 40px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+      border: 1px solid rgba(184, 140, 85, 0.3);
+    }
+    .lang-btn {
+      padding: 12px 30px; font-size: 15px; font-weight: 600; letter-spacing: 1px;
+      border-radius: 30px; color: var(--text); cursor: pointer; transition: all 0.3s;
+    }
+    .lang-btn:hover { background: #f0ede8; }
+    .lang-btn.active { background: var(--accent); color: #fff; box-shadow: 0 4px 10px rgba(184, 140, 85, 0.4); }
 
     .hero { text-align: center; margin-bottom: 40px; }
     .eyebrow { font-size: 12px; text-transform: uppercase; letter-spacing: 4px; color: var(--accent); margin-bottom: 20px; display: block; }
     h1 { font-family: 'Playfair Display', serif; font-size: clamp(40px, 10vw, 72px); margin: 0; font-weight: 400; font-style: italic; }
     .lead { font-size: 18px; font-weight: 300; margin-top: 20px; opacity: 0.8; }
 
-    .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 30px 0 20px; }
+    .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 30px 0 40px; }
     .info-item { background: var(--card-bg); border: 1px solid rgba(184, 140, 85, 0.2); padding: 25px; text-align: center; }
     .info-label { font-size: 10px; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 10px; opacity: 0.6; }
     .info-value { font-family: 'Playfair Display', serif; font-size: 20px; }
+    .address-text { font-family: 'Montserrat', sans-serif; font-size: 12px; opacity: 0.8; font-weight: 400; margin-top: 5px; display: block; }
 
     /* --- КНОПКИ КАРТ --- */
-    .maps-container {
-      display: flex; justify-content: center; gap: 15px; margin-bottom: 40px;
-    }
+    .maps-wrapper { margin-bottom: 50px; text-align: center; }
+    .maps-title { font-size: 12px; text-transform: uppercase; letter-spacing: 2px; color: var(--accent); margin-bottom: 20px; }
+    .maps-container { display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; }
     .map-btn {
-      padding: 10px 25px; border: 1px solid var(--accent); border-radius: 4px;
-      text-decoration: none; color: var(--text); font-size: 12px; font-weight: 600;
-      letter-spacing: 1px; transition: all 0.3s; background: transparent;
+      padding: 15px 35px; background: #fff; border: 1px solid var(--accent); border-radius: 8px;
+      color: var(--text); font-size: 14px; font-weight: 600; letter-spacing: 1px;
+      text-decoration: none; transition: all 0.3s; box-shadow: 0 5px 15px rgba(0,0,0,0.03);
     }
-    .map-btn:hover { background: var(--accent); color: #fff; }
+    .map-btn:hover { background: var(--accent); color: #fff; transform: translateY(-2px); }
 
     .timer-wrap { margin: 60px 0; text-align: center; }
     .timer { display: flex; justify-content: center; gap: 15px; }
@@ -112,12 +120,6 @@
 <body>
   <div class="noise"></div>
 
-  <div class="lang-switcher" id="langSwitcher">
-    <span class="lang-btn active" data-lang="kz">KZ</span>
-    <span class="lang-btn" data-lang="ru">RU</span>
-    <span class="lang-btn" data-lang="en">EN</span>
-  </div>
-
   <div id="introOverlay">
     <div id="loader"></div>
     <video id="introVideo" autoplay muted playsinline>
@@ -126,6 +128,15 @@
   </div>
 
   <main id="siteContent">
+    
+    <div class="lang-switcher-wrapper">
+      <div class="lang-switcher" id="langSwitcher">
+        <span class="lang-btn active" data-lang="kz">KZ</span>
+        <span class="lang-btn" data-lang="ru">RU</span>
+        <span class="lang-btn" data-lang="en">EN</span>
+      </div>
+    </div>
+
     <section class="hero">
       <span class="eyebrow" data-i18n="eyebrow">Үйлену тойына шақыру</span>
       <h1 data-i18n="names">Талант & Мадина</h1>
@@ -135,13 +146,19 @@
     <section class="info-grid">
       <div class="info-item"><div class="info-label" data-i18n="lbl_date">Күні</div><div class="info-value" data-i18n="val_date">26 маусым 2026</div></div>
       <div class="info-item"><div class="info-label" data-i18n="lbl_time">Уақыты</div><div class="info-value" data-i18n="val_time">16:00</div></div>
-      <div class="info-item"><div class="info-label" data-i18n="lbl_place">Өтетін орны</div><div class="info-value" data-i18n="val_place">Magauya Grand Hall</div></div>
+      <div class="info-item">
+        <div class="info-label" data-i18n="lbl_place">Өтетін орны</div>
+        <div class="info-value" data-i18n="val_place">Magauya Grand Hall<br><span class="address-text">Майқы би көшесі, 2/1</span></div>
+      </div>
       <div class="info-item"><div class="info-label" data-i18n="lbl_city">Қала</div><div class="info-value" data-i18n="val_city">Алматы</div></div>
     </section>
 
-    <div class="maps-container">
-      <a href="https://2gis.kz/almaty/geo/70000001111187725" target="_blank" class="map-btn">2GIS</a>
-      <a href="https://maps.google.com/?q=Magauya+Grand+Hall+Алматы" target="_blank" class="map-btn">Google Maps</a>
+    <div class="maps-wrapper">
+      <div class="maps-title" data-i18n="map_title">Картадан ашу</div>
+      <div class="maps-container">
+        <a href="https://2gis.kz/almaty/geo/70000001111187725" target="_blank" class="map-btn">2GIS</a>
+        <a href="https://www.google.com/maps/search/?api=1&query=lat,lng?q=43.328333,77.040277" target="_blank" class="map-btn">Google Maps</a>
+      </div>
     </div>
 
     <section class="timer-wrap">
@@ -161,6 +178,7 @@
 
   <script>
     // --- 1. СЛОВАРЬ ПЕРЕВОДОВ ---
+    // Добавлены адреса с красивым HTML-форматированием (перенос строки и класс address-text)
     const translations = {
       kz: {
         eyebrow: "Үйлену тойына шақыру",
@@ -168,8 +186,9 @@
         lead: "Сіздерді қуанышымызға ортақ болуға шақырамыз",
         lbl_date: "Күні", val_date: "26 маусым 2026",
         lbl_time: "Уақыты", val_time: "16:00",
-        lbl_place: "Өтетін орны", val_place: "Magauya Grand Hall",
+        lbl_place: "Өтетін орны", val_place: "Magauya Grand Hall<br><span class='address-text'>Майқы би көшесі, 2/1</span>",
         lbl_city: "Қала", val_city: "Алматы",
+        map_title: "Картадан ашу", 
         lbl_days: "Күн", lbl_hours: "Сағат", lbl_mins: "Мин", lbl_secs: "Сек",
         form_title: "Жауабыңызды күтеміз",
         btn_submit: "Келемін!"
@@ -180,8 +199,9 @@
         lead: "Рады пригласить вас на наше торжество",
         lbl_date: "Дата", val_date: "26 июня 2026",
         lbl_time: "Время", val_time: "16:00",
-        lbl_place: "Место", val_place: "Magauya Grand Hall",
+        lbl_place: "Место", val_place: "Magauya Grand Hall<br><span class='address-text'>ул. Майкы Би, 2/1</span>",
         lbl_city: "Город", val_city: "Алматы",
+        map_title: "Открыть на карте", 
         lbl_days: "Дней", lbl_hours: "Часов", lbl_mins: "Мин", lbl_secs: "Сек",
         form_title: "Ждем вашего ответа",
         btn_submit: "Приду!"
@@ -192,8 +212,9 @@
         lead: "We are delighted to invite you to our celebration",
         lbl_date: "Date", val_date: "June 26, 2026",
         lbl_time: "Time", val_time: "4:00 PM",
-        lbl_place: "Venue", val_place: "Magauya Grand Hall",
+        lbl_place: "Venue", val_place: "Magauya Grand Hall<br><span class='address-text'>Maiky Bi St., 2/1</span>",
         lbl_city: "City", val_city: "Almaty",
+        map_title: "Open in Maps", 
         lbl_days: "Days", lbl_hours: "Hours", lbl_mins: "Mins", lbl_secs: "Secs",
         form_title: "We await your reply",
         btn_submit: "I'll be there!"
@@ -205,7 +226,8 @@
       document.querySelectorAll('[data-i18n]').forEach(el => {
         const key = el.getAttribute('data-i18n');
         if (translations[lang][key]) {
-          el.textContent = translations[lang][key];
+          // ИСПОЛЬЗУЕМ innerHTML, чтобы срабатывал тег <br> и адреса переносились на новую строку
+          el.innerHTML = translations[lang][key];
         }
       });
       document.documentElement.lang = lang;
@@ -224,8 +246,7 @@
       });
     });
 
-    // --- 3. НАСТРОЙКИ (ОБНОВИЛ ДАТУ ДЛЯ ТАЙМЕРА) ---
-    // Установил таймер прямо на день свадьбы
+    // --- 3. НАСТРОЙКИ АНИМАЦИИ И ТАЙМЕРА ---
     const DEADLINE_ISO = '2026-06-26T16:00:00+05:00'; 
 
     function runIntro() {
@@ -233,7 +254,6 @@
       const overlay = document.getElementById('introOverlay');
       const site = document.getElementById('siteContent');
       const loader = document.getElementById('loader');
-      const langSwitcher = document.getElementById('langSwitcher');
       let isTransitioned = false;
 
       if(video) {
@@ -252,7 +272,6 @@
         setTimeout(() => {
           overlay.classList.add('fade-out-overlay');
           site.classList.add('visible');
-          langSwitcher.classList.add('visible'); 
         }, 1000); 
         
         setTimeout(() => overlay.style.display = 'none', 2500);
@@ -269,7 +288,6 @@
     
     runIntro();
 
-    // --- 4. ТАЙМЕР ---
     function updateTimer() {
       const diff = new Date(DEADLINE_ISO) - new Date();
       if (diff <= 0) return; 
