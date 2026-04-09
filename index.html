@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="kk">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Талант & Мадина — Приглашение</title>
+  <title>Талант & Мадина — Шақыру</title>
   
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
 
@@ -31,39 +31,54 @@
       background-image: url('https://www.transparenttextures.com/patterns/felt.png');
     }
 
+    /* --- ПЕРЕКЛЮЧАТЕЛЬ ЯЗЫКОВ --- */
+    .lang-switcher {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 100;
+      display: flex;
+      gap: 15px;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      opacity: 0; /* Скрыт до окончания видео */
+      transition: opacity 1.5s ease;
+    }
+    .lang-switcher.visible { opacity: 1; }
+    
+    .lang-btn {
+      color: var(--text);
+      cursor: pointer;
+      opacity: 0.5;
+      transition: opacity 0.3s, color 0.3s;
+    }
+    .lang-btn:hover { opacity: 0.8; }
+    .lang-btn.active { opacity: 1; color: var(--accent); }
+
     /* --- ИНТРО И ЛОАДЕР --- */
     #introOverlay {
       position: fixed; inset: 0; z-index: 9999; background: #000;
       display: flex; align-items: center; justify-content: center;
-      transition: background 1.5s ease; /* Для плавного перехода фона */
+      transition: background 1.5s ease;
     }
     
-    /* Элегантный спиннер загрузки */
     #loader {
-      position: absolute;
-      width: 40px; height: 40px;
+      position: absolute; width: 40px; height: 40px;
       border: 2px solid rgba(255, 255, 255, 0.2);
-      border-top-color: #fff;
-      border-radius: 50%;
-      animation: spin 1s linear infinite;
-      z-index: 10000;
-      transition: opacity 0.5s ease;
+      border-top-color: #fff; border-radius: 50%;
+      animation: spin 1s linear infinite; z-index: 10000; transition: opacity 0.5s ease;
     }
     @keyframes spin { 100% { transform: rotate(360deg); } }
 
-    #introVideo { 
-      width: 100%; height: 100%; object-fit: cover;
-      transition: opacity 1.5s ease-in-out; /* Плавное затухание видео */
-    }
-    
-    /* Классы для анимации исчезновения */
+    #introVideo { width: 100%; height: 100%; object-fit: cover; transition: opacity 1.5s ease-in-out; }
     .fade-out-video { opacity: 0 !important; }
     .fade-out-overlay { opacity: 0 !important; pointer-events: none; }
 
     /* --- КОНТЕНТ САЙТА --- */
     #siteContent {
       position: relative; z-index: 2; opacity: 0; transform: translateY(30px);
-      transition: all 1.5s ease; max-width: 700px; margin: 0 auto; padding: 60px 20px;
+      transition: all 1.5s ease; max-width: 700px; margin: 0 auto; padding: 80px 20px 60px;
     }
     #siteContent.visible { opacity: 1; transform: translateY(0); }
 
@@ -83,10 +98,7 @@
     .timer-num { font-family: 'Playfair Display', serif; font-size: 32px; display: block; border-bottom: 1px solid var(--accent); }
     .timer-label { font-size: 10px; text-transform: uppercase; margin-top: 5px; display: block; opacity: 0.6; }
 
-    .form-card {
-      background: #fff; padding: 40px; text-align: center;
-      box-shadow: 0 20px 50px rgba(0,0,0,0.05);
-    }
+    .form-card { background: #fff; padding: 40px; text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,0.05); }
     .form-card h3 { font-family: 'Playfair Display', serif; font-size: 24px; margin-bottom: 30px; margin-top: 0; }
     
     .btn {
@@ -96,14 +108,17 @@
     }
     .btn:hover { background: var(--accent); }
 
-    @media (max-width: 600px) {
-      .info-grid { grid-template-columns: 1fr; }
-      h1 { font-size: 48px; }
-    }
+    @media (max-width: 600px) { .info-grid { grid-template-columns: 1fr; } h1 { font-size: 48px; } }
   </style>
 </head>
 <body>
   <div class="noise"></div>
+
+  <div class="lang-switcher" id="langSwitcher">
+    <span class="lang-btn active" data-lang="kk">KK</span>
+    <span class="lang-btn" data-lang="ru">RU</span>
+    <span class="lang-btn" data-lang="en">EN</span>
+  </div>
 
   <div id="introOverlay">
     <div id="loader"></div>
@@ -114,34 +129,106 @@
 
   <main id="siteContent">
     <section class="hero">
-      <span class="eyebrow">Wedding Invitation</span>
-      <h1>Талант & Мадина</h1>
-      <p class="lead">Рады пригласить вас на наше торжество</p>
+      <span class="eyebrow" data-i18n="eyebrow">Үйлену тойына шақыру</span>
+      <h1 data-i18n="names">Талант & Мадина</h1>
+      <p class="lead" data-i18n="lead">Сіздерді қуанышымызға ортақ болуға шақырамыз</p>
     </section>
 
     <section class="info-grid">
-      <div class="info-item"><div class="info-label">Дата</div><div class="info-value">15 августа 2026</div></div>
-      <div class="info-item"><div class="info-label">Время</div><div class="info-value">17:00</div></div>
-      <div class="info-item"><div class="info-label">Место</div><div class="info-value">Saltanat Hall</div></div>
-      <div class="info-item"><div class="info-label">Город</div><div class="info-value">Астана</div></div>
+      <div class="info-item"><div class="info-label" data-i18n="lbl_date">Күні</div><div class="info-value" data-i18n="val_date">15 тамыз 2026</div></div>
+      <div class="info-item"><div class="info-label" data-i18n="lbl_time">Уақыты</div><div class="info-value" data-i18n="val_time">17:00</div></div>
+      <div class="info-item"><div class="info-label" data-i18n="lbl_place">Өтетін орны</div><div class="info-value" data-i18n="val_place">Saltanat Hall</div></div>
+      <div class="info-item"><div class="info-label" data-i18n="lbl_city">Қала</div><div class="info-value" data-i18n="val_city">Астана</div></div>
     </section>
 
     <section class="timer-wrap">
       <div class="timer">
-        <div class="timer-box"><span class="timer-num" id="days">00</span><span class="timer-label">Дней</span></div>
-        <div class="timer-box"><span class="timer-num" id="hours">00</span><span class="timer-label">Часов</span></div>
-        <div class="timer-box"><span class="timer-num" id="mins">00</span><span class="timer-label">Мин</span></div>
-        <div class="timer-box"><span class="timer-num" id="secs">00</span><span class="timer-label">Сек</span></div>
+        <div class="timer-box"><span class="timer-num" id="days">00</span><span class="timer-label" data-i18n="lbl_days">Күн</span></div>
+        <div class="timer-box"><span class="timer-num" id="hours">00</span><span class="timer-label" data-i18n="lbl_hours">Сағат</span></div>
+        <div class="timer-box"><span class="timer-num" id="mins">00</span><span class="timer-label" data-i18n="lbl_mins">Мин</span></div>
+        <div class="timer-box"><span class="timer-num" id="secs">00</span><span class="timer-label" data-i18n="lbl_secs">Сек</span></div>
       </div>
     </section>
 
     <div class="form-card">
-      <h3>Ждем вашего ответа</h3>
-      <a href="https://tally.so/r/gDZB0P" class="btn">Заполнить анкету</a>
+      <h3 data-i18n="form_title">Жауабыңызды күтеміз</h3>
+      <a href="https://tally.so/r/gDZB0P" class="btn" data-i18n="btn_submit">Келемін!</a>
     </div>
   </main>
 
   <script>
+    // --- 1. СЛОВАРЬ ПЕРЕВОДОВ ---
+    const translations = {
+      kk: {
+        eyebrow: "Үйлену тойына шақыру",
+        names: "Талант & Мадина",
+        lead: "Сіздерді қуанышымызға ортақ болуға шақырамыз",
+        lbl_date: "Күні", val_date: "15 тамыз 2026",
+        lbl_time: "Уақыты", val_time: "17:00",
+        lbl_place: "Өтетін орны", val_place: "Saltanat Hall",
+        lbl_city: "Қала", val_city: "Астана",
+        lbl_days: "Күн", lbl_hours: "Сағат", lbl_mins: "Мин", lbl_secs: "Сек",
+        form_title: "Жауабыңызды күтеміз",
+        btn_submit: "Келемін!"
+      },
+      ru: {
+        eyebrow: "Приглашение на свадьбу",
+        names: "Талант & Мадина",
+        lead: "Рады пригласить вас на наше торжество",
+        lbl_date: "Дата", val_date: "15 августа 2026",
+        lbl_time: "Время", val_time: "17:00",
+        lbl_place: "Место", val_place: "Saltanat Hall",
+        lbl_city: "Город", val_city: "Астана",
+        lbl_days: "Дней", lbl_hours: "Часов", lbl_mins: "Мин", lbl_secs: "Сек",
+        form_title: "Ждем вашего ответа",
+        btn_submit: "Приду!"
+      },
+      en: {
+        eyebrow: "Wedding Invitation",
+        names: "Talant & Madina",
+        lead: "We are delighted to invite you to our celebration",
+        lbl_date: "Date", val_date: "August 15, 2026",
+        lbl_time: "Time", val_time: "5:00 PM",
+        lbl_place: "Venue", val_place: "Saltanat Hall",
+        lbl_city: "City", val_city: "Astana",
+        lbl_days: "Days", lbl_hours: "Hours", lbl_mins: "Mins", lbl_secs: "Secs",
+        form_title: "We await your reply",
+        btn_submit: "I'll be there!"
+      }
+    };
+
+    // --- 2. ЛОГИКА ПЕРЕКЛЮЧЕНИЯ ЯЗЫКА ---
+    function changeLanguage(lang) {
+      // Меняем тексты на странице
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (translations[lang][key]) {
+          el.textContent = translations[lang][key];
+        }
+      });
+      document.documentElement.lang = lang;
+
+      // ОБНОВЛЕНИЕ: Передаем выбранный язык в ссылку Tally
+      // Обязательно проверь, что gDZB0P — это твой реальный ID формы!
+      const tallyBtn = document.querySelector('.form-card .btn');
+      if (tallyBtn) {
+        tallyBtn.href = `https://tally.so/r/gDZB0P?lang=${lang}`;
+      }
+    }
+
+    // Слушаем клики по кнопкам языков
+    document.querySelectorAll('.lang-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        // Убираем класс active у всех и вешаем на ту, куда кликнули
+        document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+        e.target.classList.add('active');
+        
+        // Запускаем функцию смены текста
+        changeLanguage(e.target.getAttribute('data-lang'));
+      });
+    });
+
+    // --- 3. НАСТРОЙКИ И АНИМАЦИЯ (без изменений) ---
     const DEADLINE_ISO = '2026-08-10T23:59:00+05:00'; 
 
     function runIntro() {
@@ -149,64 +236,49 @@
       const overlay = document.getElementById('introOverlay');
       const site = document.getElementById('siteContent');
       const loader = document.getElementById('loader');
+      const langSwitcher = document.getElementById('langSwitcher');
       let isTransitioned = false;
 
-      // Скрываем лоадер, как только видео реально начало воспроизводиться
-      video.addEventListener('playing', () => {
-        loader.style.opacity = '0';
-      });
-
-      // Показываем лоадер, если видео остановилось для буферизации
-      video.addEventListener('waiting', () => {
-        loader.style.opacity = '1';
-      });
+      if(video) {
+        video.addEventListener('playing', () => loader.style.opacity = '0');
+        video.addEventListener('waiting', () => loader.style.opacity = '1');
+      }
 
       const showSite = () => {
         if (isTransitioned) return;
         isTransitioned = true;
 
-        // 1. Плавно высветляем фон под видео
         overlay.style.background = '#f9f7f4'; 
-        // 2. Плавно растворяем само видео
-        video.classList.add('fade-out-video');
+        if(video) video.classList.add('fade-out-video');
         loader.style.opacity = '0';
 
-        // 3. Через 1 секунду (когда видео почти исчезло) убираем оверлей и показываем сайт
         setTimeout(() => {
           overlay.classList.add('fade-out-overlay');
           site.classList.add('visible');
+          langSwitcher.classList.add('visible'); // Показываем языки вместе с сайтом
         }, 1000); 
         
-        // 4. Полностью удаляем видео из памяти браузера через 2.5 сек (чтобы не грузило телефон)
-        setTimeout(() => {
-          overlay.style.display = 'none';
-        }, 2500);
+        setTimeout(() => overlay.style.display = 'none', 2500);
       };
 
-      // Пробуем запустить видео
       if (video) {
         video.play().catch(() => console.warn("Автоплей заблокирован"));
         video.onended = showSite;
         video.onerror = showSite;
       }
 
-      // Страховка на 5 секунд (если видео зависло или не может запуститься)
-      setTimeout(() => {
-        if (!isTransitioned) showSite();
-      }, 5000);
+      setTimeout(() => { if (!isTransitioned) showSite(); }, 5000);
     }
     
     runIntro();
 
-    // Таймер
+    // --- 4. ТАЙМЕР ---
     function updateTimer() {
       const diff = new Date(DEADLINE_ISO) - new Date();
-      if (diff <= 0) return; // Можно добавить логику скрытия кнопки, если дата прошла
+      if (diff <= 0) return; 
       
-      const d = document.getElementById('days'),
-            h = document.getElementById('hours'),
-            m = document.getElementById('mins'),
-            s = document.getElementById('secs');
+      const d = document.getElementById('days'), h = document.getElementById('hours'),
+            m = document.getElementById('mins'), s = document.getElementById('secs');
       
       if (d) d.textContent = Math.floor(diff / 86400000).toString().padStart(2, '0');
       if (h) h.textContent = Math.floor((diff / 3600000) % 24).toString().padStart(2, '0');
